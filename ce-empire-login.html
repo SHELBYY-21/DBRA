@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CE EMPIRE // COMMAND ACCESS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syncopate:wght@400;700&family=Cinzel:wght@500;700;900&family=Kanit:wght@300;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    /* ============================================================
+       RESET & PREMIUM GOLD/CYBER VARIABLES  (matches landing)
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg:          #060608;
+      --gold-pure:   #FFDF00;
+      --gold-premium:linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+      --gold:        #BF953F;
+      --gold-glow:   rgba(187, 143, 63, 0.4);
+      --cyber-blue:  #00F0FF;
+      --cyber-glow:  rgba(0, 240, 255, 0.3);
+      --pink:        #FF007A;
+      --white:       #F4F5F7;
+      --dim:         #5A5E73;
+      --glass-bg:    rgba(255, 255, 255, 0.015);
+      --glass-bdr:   rgba(187, 143, 63, 0.18);
+    }
+    html, body {
+      width: 100%; min-height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Orbitron', sans-serif;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+    /* ============================================================
+       BACKGROUND LAYERS
+    ============================================================ */
+    #canvas-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .grid-overlay {
+      position: fixed; inset: 0; z-index: 1;
+      background-image:
+        linear-gradient(rgba(187,143,63,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(187,143,63,0.02) 1px, transparent 1px);
+      background-size: 80px 80px; pointer-events: none; opacity: 0.7;
+    }
+    .vignette {
+      position: fixed; inset: 0; z-index: 2;
+      background: radial-gradient(circle at center, transparent 18%, rgba(6,6,8,0.92) 72%, #060608 100%);
+      pointer-events: none;
+    }
+    .scanlines {
+      position: fixed; inset: 0; z-index: 3;
+      background: repeating-linear-gradient(to bottom, transparent, transparent 4px, rgba(0,0,0,0.25) 4px, rgba(0,0,0,0.25) 5px);
+      pointer-events: none;
+    }
+    /* ============================================================
+       TOP BAR
+    ============================================================ */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 50px;
+      background: rgba(6,6,8,0.75); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(187,143,63,0.1);
+    }
+    .top-bar-logo {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.4em;
+      background: var(--gold-premium);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+    }
+    .top-bar-back {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.15em; color: var(--cyber-blue);
+      text-decoration: none; opacity: 0.8; display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, text-shadow 0.2s;
+    }
+    .top-bar-back:hover { opacity: 1; text-shadow: 0 0 10px var(--cyber-glow); }
+    .top-bar-right {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em;
+    }
+    @media (max-width:600px){ .top-bar{padding:14px 18px} .top-bar-right{display:none} }
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .page-wrapper {
+      position: relative; z-index: 10; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 110px 20px 60px;
+    }
+    /* ============================================================
+       LOGIN PANEL (GLASS + GOLD FRAME)
+    ============================================================ */
+    .login-panel {
+      position: relative; width: min(420px, 92vw);
+      padding: 44px 38px 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
+      border: 1px solid var(--glass-bdr);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 0 60px rgba(0,0,0,0.6), 0 0 40px rgba(187,143,63,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: panelRise 0.7s cubic-bezier(0.23,1,0.32,1) both;
+    }
+    @keyframes panelRise { from { opacity:0; transform: translateY(26px) scale(0.98); } to { opacity:1; transform:none; } }
+    /* corner brackets */
+    .panel-corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--gold); opacity: 0.6; }
+    .panel-corner.tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; border-top-left-radius: 6px; }
+    .panel-corner.tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; border-top-right-radius: 6px; }
+    .panel-corner.bl { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; border-bottom-left-radius: 6px; }
+    .panel-corner.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; border-bottom-right-radius: 6px; }
+    /* crest */
+    .crest {
+      width: 64px; height: 64px; margin: 0 auto 18px;
+      display: grid; place-items: center;
+      border-radius: 16px; background: #0b0c10;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 30px rgba(187,143,63,0.3), inset 0 0 16px rgba(187,143,63,0.2);
+      animation: crestFloat 5s ease-in-out infinite;
+    }
+    @keyframes crestFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    .crest span {
+      font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.5rem;
+      background: var(--gold-premium); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 0 8px var(--gold-glow));
+    }
+    .panel-eyebrow {
+      text-align: center; font-family: 'Syncopate', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.5em; color: var(--dim);
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .panel-title {
+      text-align: center; font-family: 'Cinzel', serif; font-weight: 700;
+      font-size: 1.7rem; letter-spacing: 0.14em;
+      background: linear-gradient(180deg,#fff 0%,#E2E5EC 45%,#BF953F 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 0 16px rgba(187,149,63,0.25));
+    }
+    .panel-sub {
+      text-align: center; font-family: 'Syncopate', sans-serif; font-weight: 700;
+      font-size: 0.55rem; letter-spacing: 0.45em; color: var(--cyber-blue);
+      text-transform: uppercase; margin-top: 8px; text-shadow: 0 0 10px var(--cyber-glow);
+    }
+    .divider {
+      height: 1px; margin: 22px 0 20px;
+      background: linear-gradient(90deg, transparent, rgba(187,143,63,0.5), transparent);
+    }
+    /* fields */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.18em; color: var(--dim);
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .field-box {
+      display: flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(187,143,63,0.22); border-radius: 10px;
+      background: rgba(0,0,0,0.35); padding: 0 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field-box:focus-within { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(187,143,63,0.3), 0 0 18px rgba(187,143,63,0.18); }
+    .field-box svg { flex-shrink: 0; opacity: 0.7; }
+    .field-box input {
+      width: 100%; background: transparent; border: none; outline: none;
+      color: var(--white); font-family: 'Orbitron', sans-serif; font-size: 0.92rem;
+      letter-spacing: 0.06em; padding: 14px 0;
+    }
+    .field-box input::placeholder { color: rgba(244,245,247,0.25); letter-spacing: 0.1em; }
+    /* error */
+    .error-msg {
+      display: none; align-items: center; gap: 8px;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+      color: #ff5a7a; background: rgba(255,0,122,0.08);
+      border: 1px solid rgba(255,0,122,0.25); border-radius: 8px;
+      padding: 9px 12px; margin-bottom: 14px;
+    }
+    .error-msg.show { display: flex; animation: errShake 0.32s; }
+    @keyframes errShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    /* submit button */
+    .enter-btn {
+      position: relative; width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 16px 24px; cursor: pointer;
+      font-family: 'Orbitron', sans-serif; font-weight: 700;
+      font-size: 0.82rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: #1a1407;
+      background: var(--gold-premium); background-size: 200% 200%;
+      border: none; border-radius: 6px;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      box-shadow: 0 0 22px rgba(187,143,63,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      animation: goldShift 6s ease infinite;
+    }
+    @keyframes goldShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+    .enter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(187,143,63,0.7), 0 0 70px rgba(0,240,255,0.18), inset 0 1px 0 rgba(255,255,255,0.4);
+      animation: goldShift 6s ease infinite, btnGlitch 0.14s steps(3) infinite;
+    }
+    .enter-btn:active { transform: scale(0.98); }
+    .enter-btn:disabled { opacity: 0.6; cursor: progress; }
+    @keyframes btnGlitch {
+      0%   { clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); }
+      33%  { clip-path: polygon(12px 0%, 100% 0%, calc(100% - 8px)  100%, 0% 100%); }
+      66%  { clip-path: polygon(8px  0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); }
+      100% { clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); }
+    }
+    .enter-btn .arrow { width: 16px; height: 2px; background: #1a1407; position: relative; transition: width 0.2s; }
+    .enter-btn .arrow::after { content:''; position:absolute; right:-1px; top:-4px; width:8px; height:8px; border-right:2px solid #1a1407; border-top:2px solid #1a1407; transform: rotate(45deg); }
+    .enter-btn:hover .arrow { width: 24px; }
+    .panel-foot {
+      margin-top: 18px; text-align: center;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.2em; color: var(--dim);
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .panel-foot .lock { color: var(--gold); }
+    /* transition overlay */
+    #transition-overlay {
+      position: fixed; inset: 0; z-index: 9999; background: var(--bg);
+      opacity: 0; pointer-events: none;
+    }
+    #transition-overlay.engage { animation: engageOut 1.3s ease-in-out forwards; }
+    @keyframes engageOut {
+      0%{opacity:0;background:var(--bg)} 20%{opacity:1;background:#1a1405}
+      55%{opacity:1;background:#221a06} 100%{opacity:0;background:var(--bg)}
+    }
+    #status-badge {
+      position: fixed; top: 70px; left: 50%; transform: translateX(-50%); z-index: 250;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em;
+      color: var(--gold); background: rgba(6,6,8,0.9); border: 1px solid rgba(187,143,63,0.3);
+      padding: 6px 14px; border-radius: 5px; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    #status-badge.show { opacity: 1; }
+  </style>
+</head>
+<body>
+<div id="transition-overlay"></div>
+<div id="status-badge">◎ ACCESS GRANTED — ENGAGING…</div>
+<canvas id="canvas-bg"></canvas>
+<div class="grid-overlay"></div>
+<div class="vignette"></div>
+<div class="scanlines"></div>
+
+<header class="top-bar">
+  <div class="top-bar-logo">CE EMPIRE</div>
+  <a class="top-bar-back" href="ce-empire-landing.html">⟵ BACK TO GATE</a>
+  <div class="top-bar-right" id="live-clock">--:--:-- UTC</div>
+</header>
+
+<main class="page-wrapper">
+  <form class="login-panel" id="login-form" autocomplete="off">
+    <span class="panel-corner tl"></span>
+    <span class="panel-corner tr"></span>
+    <span class="panel-corner bl"></span>
+    <span class="panel-corner br"></span>
+
+    <div class="crest"><span>CE</span></div>
+    <div class="panel-eyebrow">Authorized Personnel Only</div>
+    <div class="panel-title">COMMAND ACCESS</div>
+    <div class="panel-sub">Identity Verification</div>
+
+    <div class="divider"></div>
+
+    <div class="error-msg" id="error-msg">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff5a7a" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <span id="error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</span>
+    </div>
+
+    <div class="field">
+      <label for="username">Operator ID</label>
+      <div class="field-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BF953F" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <input id="username" name="username" type="text" placeholder="BOSS" autocapitalize="none" autocomplete="username" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="password">Access Key</label>
+      <div class="field-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#BF953F" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+      </div>
+    </div>
+
+    <button class="enter-btn" id="enter-btn" type="submit">
+      <span id="btn-label">เข้าสู่ศูนย์บัญชาการ</span>
+      <span class="arrow"></span>
+    </button>
+
+    <div class="panel-foot"><span class="lock">⬢</span> ENCRYPTED · SHA-256 · CE EMPIRE COMMAND</div>
+  </form>
+</main>
+
+<script>
+'use strict';
+/* ── CONFIG ─────────────────────────────────────────────
+   On success, operators are sent to the live dashboard.
+   BOSS credential matches the app's built-in operator hash.
+──────────────────────────────────────────────────────── */
+const APP_URL    = "https://web-razen-s-projects.vercel.app/";
+const ADMIN_USER = "BOSS";
+const ADMIN_HASH = "c7356f6e41312ae224620c0782081e501fd078e2b70e72140a28ad2b6dd137fa";
+
+/* ── SHA-256 (pure JS, works on file:// and https) ────── */
+function sha256Hex(ascii) {
+  function rr(n, x) { return (x >>> n) | (x << (32 - n)); }
+  const K = [
+    0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  let h0=0x6a09e667,h1=0xbb67ae85,h2=0x3c6ef372,h3=0xa54ff53a,
+      h4=0x510e527f,h5=0x9b05688c,h6=0x1f83d9ab,h7=0x5be0cd19;
+  // UTF-8 encode
+  const bytes = [];
+  for (let i=0;i<ascii.length;i++){
+    let c = ascii.charCodeAt(i);
+    if (c<0x80) bytes.push(c);
+    else if (c<0x800){ bytes.push(0xc0|(c>>6),0x80|(c&63)); }
+    else if (c<0xd800||c>=0xe000){ bytes.push(0xe0|(c>>12),0x80|((c>>6)&63),0x80|(c&63)); }
+    else { i++; c=0x10000+(((c&0x3ff)<<10)|(ascii.charCodeAt(i)&0x3ff));
+      bytes.push(0xf0|(c>>18),0x80|((c>>12)&63),0x80|((c>>6)&63),0x80|(c&63)); }
+  }
+  const l = bytes.length, bitLen = l*8;
+  bytes.push(0x80);
+  while (bytes.length % 64 !== 56) bytes.push(0);
+  for (let i=7;i>=0;i--) bytes.push((bitLen / Math.pow(2,8*i)) & 0xff);
+  const w = new Array(64);
+  for (let j=0;j<bytes.length;j+=64){
+    for (let i=0;i<16;i++) w[i]=(bytes[j+i*4]<<24)|(bytes[j+i*4+1]<<16)|(bytes[j+i*4+2]<<8)|(bytes[j+i*4+3]);
+    for (let i=16;i<64;i++){
+      const s0 = rr(7,w[i-15])^rr(18,w[i-15])^(w[i-15]>>>3);
+      const s1 = rr(17,w[i-2])^rr(19,w[i-2])^(w[i-2]>>>10);
+      w[i]=(w[i-16]+s0+w[i-7]+s1)|0;
+    }
+    let a=h0,b=h1,c=h2,d=h3,e=h4,f=h5,g=h6,h=h7;
+    for (let i=0;i<64;i++){
+      const S1=rr(6,e)^rr(11,e)^rr(25,e);
+      const ch=(e&f)^(~e&g);
+      const t1=(h+S1+ch+K[i]+w[i])|0;
+      const S0=rr(2,a)^rr(13,a)^rr(22,a);
+      const maj=(a&b)^(a&c)^(b&c);
+      const t2=(S0+maj)|0;
+      h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;
+    }
+    h0=(h0+a)|0;h1=(h1+b)|0;h2=(h2+c)|0;h3=(h3+d)|0;
+    h4=(h4+e)|0;h5=(h5+f)|0;h6=(h6+g)|0;h7=(h7+h)|0;
+  }
+  const toHex = n => ('00000000'+(n>>>0).toString(16)).slice(-8);
+  return toHex(h0)+toHex(h1)+toHex(h2)+toHex(h3)+toHex(h4)+toHex(h5)+toHex(h6)+toHex(h7);
+}
+
+/* ── AUDIO (hover blip + success engage) ──────────────── */
+let _ac = null;
+function ac(){ if(!_ac){ const A=window.AudioContext||window.webkitAudioContext; if(!A) return null; _ac=new A(); } if(_ac.state==='suspended')_ac.resume(); return _ac; }
+function master(c){ const g=c.createGain(); g.gain.setValueAtTime(0.5,c.currentTime); g.connect(c.destination); return g; }
+function blip(){ try{ const c=ac(); if(!c)return; const n=c.currentTime,m=master(c);
+  const o=c.createOscillator(),e=c.createGain(); o.type='sine';
+  o.frequency.setValueAtTime(1080,n); o.frequency.exponentialRampToValueAtTime(720,n+0.07);
+  e.gain.setValueAtTime(0,n); e.gain.linearRampToValueAtTime(0.5,n+0.005); e.gain.exponentialRampToValueAtTime(0.001,n+0.1);
+  o.connect(e); e.connect(m); o.start(n); o.stop(n+0.11);}catch(x){} }
+function engageSfx(){ try{ const c=ac(); if(!c)return; const n=c.currentTime,m=master(c);
+  const b=c.createOscillator(),bg=c.createGain(); b.type='sine';
+  b.frequency.setValueAtTime(60,n); b.frequency.exponentialRampToValueAtTime(30,n+0.4);
+  bg.gain.setValueAtTime(0,n); bg.gain.linearRampToValueAtTime(1,n+0.01); bg.gain.exponentialRampToValueAtTime(0.001,n+0.45);
+  b.connect(bg); bg.connect(m); b.start(n); b.stop(n+0.46);
+  const s=c.createOscillator(),sg=c.createGain(),bp=c.createBiquadFilter(); bp.type='bandpass';
+  bp.frequency.setValueAtTime(400,n); bp.frequency.exponentialRampToValueAtTime(3000,n+0.6); bp.Q.value=3;
+  s.type='sawtooth'; s.frequency.setValueAtTime(120,n); s.frequency.exponentialRampToValueAtTime(1500,n+0.55);
+  sg.gain.setValueAtTime(0,n); sg.gain.linearRampToValueAtTime(0.45,n+0.07); sg.gain.exponentialRampToValueAtTime(0.001,n+0.7);
+  s.connect(bp); bp.connect(sg); sg.connect(m); s.start(n); s.stop(n+0.72);
+  const p=c.createOscillator(),pg=c.createGain(); p.type='square';
+  p.frequency.setValueAtTime(1568,n+0.5); p.frequency.exponentialRampToValueAtTime(3136,n+0.66);
+  pg.gain.setValueAtTime(0,n+0.5); pg.gain.linearRampToValueAtTime(0.2,n+0.53); pg.gain.exponentialRampToValueAtTime(0.001,n+0.9);
+  p.connect(pg); pg.connect(m); p.start(n+0.5); p.stop(n+0.92);}catch(x){} }
+
+/* ── CLOCK ────────────────────────────────────────────── */
+function clock(){ const d=new Date();
+  const t=[d.getUTCHours(),d.getUTCMinutes(),d.getUTCSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+  const el=document.getElementById('live-clock'); if(el) el.textContent=t+' UTC'; }
+setInterval(clock,1000); clock();
+
+/* ── LOGIN FLOW ───────────────────────────────────────── */
+const form    = document.getElementById('login-form');
+const userEl  = document.getElementById('username');
+const passEl  = document.getElementById('password');
+const errBox  = document.getElementById('error-msg');
+const errText = document.getElementById('error-text');
+const btn     = document.getElementById('enter-btn');
+const btnLbl  = document.getElementById('btn-label');
+const overlay = document.getElementById('transition-overlay');
+const badge   = document.getElementById('status-badge');
+
+btn.addEventListener('mouseenter', blip);
+[userEl, passEl].forEach(el => el.addEventListener('focus', () => errBox.classList.remove('show')));
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (btn.disabled) return;
+  const user = userEl.value.trim();
+  const hash = sha256Hex(passEl.value);
+  const ok = (user === ADMIN_USER && hash === ADMIN_HASH);
+
+  // small constant-ish delay
+  btn.disabled = true; btnLbl.textContent = 'VERIFYING…';
+  await new Promise(r => setTimeout(r, 360));
+
+  if (!ok) {
+    btn.disabled = false; btnLbl.textContent = 'เข้าสู่ศูนย์บัญชาการ';
+    passEl.value = '';
+    errText.textContent = 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+    errBox.classList.add('show');
+    return;
+  }
+
+  // SUCCESS → engage → redirect
+  btnLbl.textContent = 'ACCESS GRANTED';
+  engageSfx();
+  badge.classList.add('show');
+  overlay.classList.add('engage');
+  setTimeout(() => { window.location.href = APP_URL; }, 1150);
+});
+
+/* ── CANVAS PARTICLE FIELD (gold + cyber-blue motes) ──── */
+(function(){
+  const cv=document.getElementById('canvas-bg'),ctx=cv.getContext('2d');
+  const COLORS=['191,149,63','0,240,255','255,223,0'];
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w,h,dpr,parts=[];
+  const mk=()=>{const c=COLORS[Math.floor(Math.random()*COLORS.length)];
+    return{x:Math.random()*w,y:Math.random()*h,r:(Math.random()*1.5+0.4)*dpr,
+      vx:(Math.random()-0.5)*0.16*dpr,vy:-(Math.random()*0.35+0.08)*dpr,
+      a:Math.random()*0.45+0.18,c,tw:Math.random()*Math.PI*2};};
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,2);
+    w=cv.width=innerWidth*dpr;h=cv.height=innerHeight*dpr;
+    cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+    parts=Array.from({length:Math.min(75,Math.floor(innerWidth/18))},mk);}
+  function frame(){ctx.clearRect(0,0,w,h);
+    for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.tw+=0.03;
+      if(p.y<-12){p.y=h+12;p.x=Math.random()*w;}
+      if(p.x<-12)p.x=w+12;if(p.x>w+12)p.x=-12;
+      const a=p.a*(0.6+0.4*Math.sin(p.tw));
+      ctx.beginPath();ctx.fillStyle=`rgba(${p.c},${a})`;
+      ctx.shadowBlur=9*dpr;ctx.shadowColor=`rgba(${p.c},0.9)`;
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();}
+    ctx.shadowBlur=0;requestAnimationFrame(frame);}
+  resize();window.addEventListener('resize',resize,{passive:true});if(!reduce)frame();
+})();
+</script>
+</body>
+</html>
