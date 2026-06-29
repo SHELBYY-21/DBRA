@@ -711,25 +711,87 @@ html, body {
 @media (max-width: 1024px) {
   #content-area { padding-left: 20px; padding-right: 20px; }
 }
+
+/* ── Tablet / collapsed sidebar ─────────────────────────── */
 @media (max-width: 768px) {
+  /* Sidebar slides over full screen height (covers top-bar too) */
   #sidebar {
     position: fixed; top: 0; bottom: 0; left: -280px;
-    z-index: 150; transition: left 0.3s cubic-bezier(0.23,1,0.32,1);
-    width: 260px;
+    z-index: 200; transition: left 0.3s cubic-bezier(0.23,1,0.32,1);
+    width: 280px;
   }
-  #sidebar.sidebar-open { left: 0; box-shadow: 0 0 60px rgba(0,0,0,0.8); }
-  #menu-toggle { display: flex; }
-  #content-area { margin-left: 0; padding-left: 16px; padding-right: 16px; }
-  #top-bar { padding: 0 16px; }
+  #sidebar.sidebar-open { left: 0; box-shadow: 0 0 60px rgba(0,0,0,0.9); }
+
+  /* Hamburger visible; reorder top-bar so: [☰]  [logo]  [clock] */
+  #menu-toggle { display: flex; order: -1; }
+  #top-bar { padding: 0 14px; gap: 0; }
+  .top-bar-logo { order: 0; flex: 1; text-align: center; }
+  #top-bar-clock { order: 1; font-size: 0.6rem; }
+
+  /* Content area no longer offset by sidebar */
+  #content-area { margin-left: 0; padding-left: 14px; padding-right: 14px; }
+
+  /* Section title: tame the huge Cinzel on tablet */
+  .section-title { font-size: 1rem; letter-spacing: 0.08em; }
 }
+
+/* ── Mobile ≤600px ──────────────────────────────────────── */
 @media (max-width: 600px) {
-  #top-bar-clock { display: none; }
+  /* Hide live status text in top-bar; keep clock small */
   .top-bar-center { display: none; }
+  #top-bar-clock { display: block; font-size: 0.58rem; letter-spacing: 0.06em; }
+
+  /* Entry gate: tighten spacing so content is visible without scrolling */
+  #entry-gate { gap: 20px; padding: 28px 20px; }
+  .entry-quote-wrap { min-height: 3em; }
+  .entry-quote { font-size: clamp(0.88rem, 4vw, 1.1rem); }
+
+  /* CTA button: shrink letter-spacing, allow text to breathe on 360px */
+  .cta-btn { padding: 16px 28px; letter-spacing: 0.15em; width: 100%; justify-content: center; max-width: 380px; }
+
+  /* Section title */
+  .section-title { font-size: 0.9rem; letter-spacing: 0.06em; }
+  .section-sub { font-size: 0.55rem; }
+  .section-header { margin-bottom: 16px; }
+
+  /* Stat grid: 2 columns on phones */
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  .stat-card { padding: 14px 14px; }
+  .stat-value { font-size: 1.1rem; }
+
+  /* Cards grid: single column on phones */
+  .cards-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Agent search: full width on small screens */
+  #agent-search { width: 100%; }
+  .agent-controls { flex-direction: column; align-items: stretch; }
+  #position-chips { flex-wrap: wrap; }
+  #agent-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .agent-card { padding: 14px 10px; gap: 8px; }
+  .agent-name { font-size: 0.72rem; letter-spacing: 0.06em; }
+
+  /* Placeholder blocks: reduce padding */
+  .placeholder-block { padding: 20px 14px; }
+  .placeholder-block .ph-code { font-size: 0.6rem; }
+  .placeholder-block .ph-th { font-size: 0.76rem; }
+
+  /* Ticker label: shorten on very narrow screens */
+  .ticker-label { padding: 0 10px; font-size: 0.42rem; letter-spacing: 0.12em; }
+  .ticker-inner { font-size: 0.58rem; }
+  .ticker-item { padding: 0 18px; }
+
+  /* Content area padding */
+  #content-area { padding-left: 12px; padding-right: 12px; padding-top: 68px; }
 }
-@media (max-width: 480px) {
+
+/* ── Very small ≤380px ──────────────────────────────────── */
+@media (max-width: 380px) {
+  .top-bar-logo { font-size: 0.7rem; letter-spacing: 0.25em; }
+  #top-bar-clock { display: none; }
+  .section-title { font-size: 0.82rem; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .cards-grid { grid-template-columns: 1fr; }
-  #agent-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  .stat-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  #agent-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -774,7 +836,7 @@ html, body {
     <span class="entry-cursor" id="entry-cursor" aria-hidden="true"></span>
   </div>
   <button class="cta-btn" id="entry-cta" aria-label="Enter CE Empire Control Center">
-    <span class="cta-text">[ ENTER CONTROL CENTER ]</span>
+    <span class="cta-text" style="white-space:nowrap;">[ ENTER CONTROL CENTER ]</span>
     <span class="cta-arrow" aria-hidden="true"></span>
   </button>
 </section>
