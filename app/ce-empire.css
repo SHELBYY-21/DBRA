@@ -1,5 +1,5 @@
+/* CE EMPIRE — Cyberpunk Command Center */
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=Cinzel:wght@400;600;700&family=Syncopate:wght@400;700&family=Kanit:wght@300;400;600&display=swap");
 
 @theme inline {
   --font-sans: "Orbitron", "Kanit", sans-serif;

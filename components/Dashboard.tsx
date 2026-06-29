@@ -77,11 +77,10 @@ export default function Dashboard() {
         onNavSound={navSound}
       />
 
-      {/* Main content */}
+      {/* Main content — sidebar is 240px wide, fixed */}
       <main
         key={active}
         style={{
-          marginLeft: 0,
           paddingTop: 72,
           paddingBottom: 52,
           paddingLeft: 16,
@@ -91,9 +90,10 @@ export default function Dashboard() {
           zIndex: 1,
           animation: "panelRise 0.25s ease both",
         }}
-        className="md:pl-[256px] md:pr-6"
       >
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+        {/* On md+, offset left by sidebar width (240px) + gap (16px) */}
+        <style>{`@media (min-width:768px){.dash-main{padding-left:264px!important;padding-right:24px!important;}}`}</style>
+        <div className="dash-main" style={{ maxWidth: 1280, margin: "0 auto" }}>
           {SECTION_MAP[active]}
         </div>
       </main>
