@@ -12,6 +12,7 @@
    RESET & CSS CUSTOM PROPERTIES
 ============================================================ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
 :root {
   --bg:           #060608;
   --gold:         #BF953F;
@@ -1245,15 +1246,10 @@ const EntryGate = (() => {
 })();
 
 /* ════════════════════════════════════════════════════
-async function async function async function name(params) {
-  name
-}(params) {
-  name
-}(params) {
-     NAV ROUTER
-  ════════════════════════════════════════════════════ */
-  const NavRouter = (() => {
-    let _current = 'overview';
+   NAV ROUTER
+════════════════════════════════════════════════════ */
+const NavRouter = (() => {
+  let _current = 'overview';
   
     function navigate(sectionId) {
       document.querySelectorAll('#content-area > section').forEach(s => {
@@ -1333,8 +1329,7 @@ async function async function async function name(params) {
     function toggleReveal(cardId) {
       state[cardId] = !state[cardId];
       renderCard(cardId);
-  
-}  }
+    }
 
   function renderCard(cardId) {
     const card = CARDS.find(c => c.id === cardId);
