@@ -328,23 +328,23 @@ html, body {
               inset 0 -1px 0 rgba(0,255,231,0.03);
   position: relative;
 }
-/* Corner-bracket chrome decoration */
-.glass-panel::before,
-.glass-panel::after {
+/* Corner-bracket chrome decoration — only on non-stat-card panels */
+.glass-panel:not(.stat-card):not(.agent-card):not(.virtual-card-wrap)::before,
+.glass-panel:not(.stat-card):not(.agent-card):not(.virtual-card-wrap)::after {
   content: '';
   position: absolute;
   width: 10px; height: 10px;
   border-color: var(--neon);
   border-style: solid;
-  opacity: 0.5;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 2;
 }
-.glass-panel::before {
+.glass-panel:not(.stat-card):not(.agent-card):not(.virtual-card-wrap)::before {
   top: -1px; left: -1px;
   border-width: 1px 0 0 1px;
 }
-.glass-panel::after {
+.glass-panel:not(.stat-card):not(.agent-card):not(.virtual-card-wrap)::after {
   bottom: -1px; right: -1px;
   border-width: 0 1px 1px 0;
 }
@@ -368,18 +368,18 @@ html, body {
   background: #03040a;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 20px 24px;
-  gap: clamp(14px, 2.8vh, 28px);
+  padding: clamp(16px,4vh,40px) 24px clamp(32px,8vh,80px);
+  gap: clamp(12px, 2.4vh, 24px);
 }
 /* Boot terminal above rings */
 #boot-terminal {
-  font-family: 'Share Tech Mono', 'Kanit', monospace; font-size: 0.68rem;
-  color: var(--neon); letter-spacing: 0.08em; line-height: 1.7;
-  text-align: left; width: 100%; max-width: 480px;
+  font-family: 'Share Tech Mono', 'Kanit', monospace; font-size: 0.63rem;
+  color: var(--neon); letter-spacing: 0.07em; line-height: 1.6;
+  text-align: left; width: 100%; max-width: 440px;
   text-shadow: 0 0 8px var(--cyber-glow);
-  min-height: 4.5em;
-  border-left: 2px solid var(--neon);
-  padding-left: 12px;
+  min-height: 3.8em;
+  border-left: 2px solid rgba(0,255,231,0.6);
+  padding-left: 10px;
   animation: bootFlicker 0.8s ease-in-out 1;
 }
 #boot-terminal .boot-line { display: block; }
@@ -547,8 +547,8 @@ html, body {
    SIDEBAR
 ============================================================ */
 #sidebar {
-  position: fixed; top: 52px; left: 0; bottom: 36px;
-  width: 250px; z-index: 50; overflow-y: auto;
+  position: fixed; top: 52px; left: 0; bottom: 28px;
+  width: 250px; z-index: 50; overflow-y: auto; overflow-x: hidden;
   background: rgba(3,4,10,0.94);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid rgba(0,255,231,0.12);
@@ -629,7 +629,8 @@ html, body {
 }
 .grok-status {
   font-family: 'Share Tech Mono', 'Kanit', monospace; font-size: 0.55rem;
-  color: var(--dim); letter-spacing: 0.1em;
+  color: var(--dim); letter-spacing: 0.06em;
+  white-space: nowrap; overflow: visible;
 }
 #sidebar-backdrop,
 .sidebar-overlay {
@@ -641,7 +642,7 @@ html, body {
    CONTENT AREA & TICKER
 ============================================================ */
 #content-area {
-  margin-left: 260px; padding-top: 72px; padding-bottom: 60px;
+  margin-left: 250px; padding-top: 68px; padding-bottom: 48px;
   padding-left: 28px; padding-right: 28px;
   min-height: 100vh;
 }
@@ -719,6 +720,8 @@ html, body {
   font-family: 'Orbitron', 'Kanit', sans-serif; font-size: 1.4rem; font-weight: 700;
   background: var(--gold-premium);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  background-size: 200% auto;
+  animation: goldShift 4s ease infinite;
 }
 .stat-value.cyber {
   background: none; -webkit-text-fill-color: var(--cyber-blue);
@@ -1022,11 +1025,12 @@ html, body {
   .top-bar-center { display: none; }
   #top-bar-clock { display: block; font-size: 0.58rem; letter-spacing: 0.06em; }
 
-  /* Entry gate: tighten so ring + quote + CTA all fit in one screen */
-  #entry-gate { gap: 14px; padding: 20px 20px; }
-  .entry-rings { width: clamp(140px, 50vw, 220px); height: clamp(140px, 50vw, 220px); }
-  .entry-quote-wrap { min-height: 2.4em; }
-  .entry-quote { font-size: clamp(0.82rem, 3.8vw, 1rem); }
+  /* Entry gate: tighten so terminal + ring + quote + CTA fit in one screen */
+  #entry-gate { gap: 10px; padding: 16px 18px; }
+  #boot-terminal { font-size: 0.57rem; min-height: 3em; line-height: 1.5; }
+  .entry-rings { width: clamp(130px, 46vw, 200px); height: clamp(130px, 46vw, 200px); }
+  .entry-quote-wrap { min-height: 2.2em; }
+  .entry-quote { font-size: clamp(0.78rem, 3.6vw, 0.95rem); }
 
   /* CTA button: shrink letter-spacing, allow text to breathe on 360px */
   .cta-btn { padding: 16px 28px; letter-spacing: 0.15em; width: 100%; justify-content: center; max-width: 380px; }
@@ -1401,7 +1405,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ════════════════════════════════════════════════════
    ICON CONSTANTS
-════════════════════════════════════════════════════ */
+═════════════��══════════════════════════════════════ */
 const ICON_EYE_OPEN = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const ICON_EYE_CLOSED = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 const ICON_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
