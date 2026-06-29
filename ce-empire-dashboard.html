@@ -971,7 +971,7 @@ html, body {
     <div class="top-bar-logo">CE EMPIRE</div>
     <div class="top-bar-center">
       <span class="status-dot" aria-hidden="true"></span>
-      <span>ศูนย์บัญชาการออนไลน์</span>
+      <span>COMMAND CENTER ONLINE</span>
     </div>
     <div id="top-bar-clock" aria-live="off">--:--:-- UTC</div>
   </header>
@@ -1039,7 +1039,7 @@ html, body {
         <span class="grok-led" aria-hidden="true"></span>
         <span class="grok-title">GROK AI ENGINE</span>
       </div>
-      <div class="grok-status">[เชื่อมต่อแล้ว]</div>
+      <div class="grok-status">[CONNECTED]</div>
     </div>
   </nav>
 
@@ -1057,7 +1057,7 @@ html, body {
       <div class="stat-grid">
         <div class="stat-card glass-panel">
           <div class="stat-label">สถานะระบบ</div>
-          <div class="stat-value green">ปกติ</div>
+          <div class="stat-value green">ONLINE</div>
         </div>
         <div class="stat-card glass-panel">
           <div class="stat-label">ทีมงานออนไลน์</div>
@@ -1069,7 +1069,7 @@ html, body {
         </div>
         <div class="stat-card glass-panel">
           <div class="stat-label">การเข้ารหัส</div>
-          <div class="stat-value green">เปิดใช้งาน</div>
+          <div class="stat-value green">ACTIVE</div>
         </div>
       </div>
       <div class="placeholder-block">
@@ -1192,13 +1192,13 @@ html, body {
     <!-- ── SYSTEM ─────────────────────────────────── -->
     <section id="section-system" aria-label="ตรวจสอบระบบ" hidden>
       <div class="section-header">
-        <div><h1 class="section-title">ตรวจสอบระบบ</h1><div class="section-sub">สถานะโครงสร้างพื้นฐาน</div></div>
+        <div><h1 class="section-title">ตรวจสอบระบบ</h1><div class="section-sub">Infrastructure Status</div></div>
       </div>
       <div class="stat-grid">
-        <div class="stat-card glass-panel"><div class="stat-label">เอนจินหลัก</div><div class="stat-value green">ออนไลน์</div></div>
-        <div class="stat-card glass-panel"><div class="stat-label">การเชื่อมต่อ DB</div><div class="stat-value green">เสถียร</div></div>
-        <div class="stat-card glass-panel"><div class="stat-label">API Gateway</div><div class="stat-value cyber">ใช้งานได้</div></div>
-        <div class="stat-card glass-panel"><div class="stat-label">การเข้ารหัส</div><div class="stat-value green">SHA-256</div></div>
+        <div class="stat-card glass-panel"><div class="stat-label">Core Engine</div><div class="stat-value green">ONLINE</div></div>
+        <div class="stat-card glass-panel"><div class="stat-label">DB Connection</div><div class="stat-value green">STABLE</div></div>
+        <div class="stat-card glass-panel"><div class="stat-label">API Gateway</div><div class="stat-value cyber">ACTIVE</div></div>
+        <div class="stat-card glass-panel"><div class="stat-label">Encryption</div><div class="stat-value green">SHA-256</div></div>
       </div>
     </section>
 
@@ -1217,7 +1217,7 @@ html, body {
 
   <!-- TICKER BAR -->
   <footer id="ticker-bar" aria-label="System status ticker">
-    <div class="ticker-label" aria-hidden="true">สถานะจักรวรรดิ</div>
+    <div class="ticker-label" aria-hidden="true">CE EMPIRE</div>
     <div style="overflow:hidden;flex:1;">
       <div class="ticker-inner" id="ticker-inner" aria-hidden="true"></div>
     </div>
@@ -1621,7 +1621,7 @@ const NavRouter = (() => {
         document.body.removeChild(ta);
       } catch (_) {}
     }
-    showTooltip(valueEl, success ? 'คัดลอกแล้ว // ปลอดภัย' : 'คัดลอกไม่สำเร็จ');
+    showTooltip(valueEl, success ? 'COPIED! // SECURED' : 'COPY FAILED');
     if (success) AudioEngine.copyChirp();
   }
 
@@ -1630,7 +1630,7 @@ const NavRouter = (() => {
     const old = anchor.parentElement.querySelector('.tooltip');
     if (old) old.remove();
     const tip = document.createElement('span');
-    tip.className = 'tooltip ' + (text === 'คัดลอกแล้ว // ปลอดภัย' ? 'tooltip-success' : 'tooltip-fail');
+    tip.className = 'tooltip ' + (text === 'COPIED! // SECURED' ? 'tooltip-success' : 'tooltip-fail');
     tip.textContent = text;
     tip.setAttribute('aria-hidden', 'true');
     anchor.parentElement.style.position = 'relative';
@@ -1746,7 +1746,7 @@ const AgentManager = (() => {
 
     const nameNode     = document.createTextNode(agent.name);
     const posNode      = document.createTextNode(agent.position);
-    const toggleLabel  = document.createTextNode(isActive ? 'ออนไลน์' : 'ออฟไลน์');
+    const toggleLabel  = document.createTextNode(isActive ? 'ACTIVE' : 'INACTIVE');
 
     const avatarEl = document.createElement('div');
     avatarEl.className = 'agent-avatar'; avatarEl.setAttribute('aria-hidden', 'true');
@@ -1833,16 +1833,16 @@ const AgentManager = (() => {
 ════════════════════════════════════════════════════ */
 const TickerEngine = (() => {
   const ITEMS = [
-    { text: 'ระบบทำงานปกติ',           cls: 't-gold'  },
-    { text: 'โหนดทั้งหมดออนไลน์',      cls: 't-cyber' },
-    { text: 'การเข้ารหัสเปิดใช้งาน',   cls: 't-gold'  },
-    { text: 'CE EMPIRE ปลอดภัย',       cls: ''        },
-    { text: 'ฟีด USDT พร้อมใช้งาน',   cls: 't-cyber' },
-    { text: 'ทีมงานพร้อมปฏิบัติการ',   cls: 't-gold'  },
-    { text: 'ศูนย์บัญชาการออนไลน์',   cls: 't-cyber' },
-    { text: 'ปฏิบัติการการเงินปกติ',   cls: ''        },
-    { text: 'เอนจิน AI ซิงก์แล้ว',    cls: 't-gold'  },
-    { text: 'ชั้นการยืนยันตัวตนปลอดภัย', cls: 't-cyber' }
+    { text: 'SYSTEM NOMINAL',      cls: 't-gold'  },
+    { text: 'ALL NODES ONLINE',    cls: 't-cyber' },
+    { text: 'ENCRYPTION ACTIVE',   cls: 't-gold'  },
+    { text: 'CE EMPIRE SECURE',    cls: ''        },
+    { text: 'USDT FEED ACTIVE',    cls: 't-cyber' },
+    { text: 'AGENT MATRIX READY',  cls: 't-gold'  },
+    { text: 'COMMAND CENTER LIVE', cls: 't-cyber' },
+    { text: 'FINANCIAL OPS OK',    cls: ''        },
+    { text: 'NEURAL ENGINE SYNC',  cls: 't-gold'  },
+    { text: 'AUTH LAYER SECURED',  cls: 't-cyber' }
   ];
 
   function buildContent() {
