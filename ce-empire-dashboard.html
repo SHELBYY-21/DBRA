@@ -449,10 +449,18 @@ html, body {
 }
 .placeholder-block {
   padding: 32px; text-align: center;
-  font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
-  color: var(--dim); letter-spacing: 0.15em;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
   border: 1px dashed rgba(187,143,63,0.15); border-radius: 14px;
   margin-top: 16px;
+}
+.placeholder-block .ph-code {
+  font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
+  color: var(--dim); letter-spacing: 0.15em;
+}
+.placeholder-block .ph-th {
+  font-family: 'Kanit', sans-serif; font-size: 0.82rem; font-weight: 300;
+  line-height: 1.6; letter-spacing: 0.02em;
+  color: #9aa0b5; max-width: 520px;
 }
 
 /* ============================================================
@@ -652,6 +660,52 @@ html, body {
 }
 
 /* ============================================================
+   INTERACTIVE BUTTON POLISH  (creative-button sheen + press)
+============================================================ */
+.chip, .status-toggle, .card-eye-btn, .delete-btn {
+  position: relative;
+  overflow: hidden;
+}
+/* diagonal light sheen that sweeps across on hover */
+.chip::before,
+.status-toggle::before,
+.card-eye-btn::before,
+.delete-btn::before {
+  content: '';
+  position: absolute; top: 0; left: -130%;
+  width: 55%; height: 100%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.16) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  transition: left 0.55s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+.chip:hover::before,
+.status-toggle:hover::before,
+.card-eye-btn:hover::before,
+.delete-btn:hover::before { left: 150%; }
+/* tactile press feedback */
+.chip:active,
+.status-toggle:active,
+.card-eye-btn:active,
+.delete-btn:active,
+.nav-item:active,
+#menu-toggle:active { transform: translateY(1px) scale(0.97); }
+/* nav-item: subtle gold rail that grows on hover (kept behind active rail) */
+.nav-item::after {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%); width: 2px; height: 0;
+  background: var(--gold); border-radius: 2px;
+  box-shadow: 0 0 8px var(--gold-glow);
+  transition: height 0.25s ease; pointer-events: none;
+}
+.nav-item:hover::after { height: 60%; }
+.nav-item.active::after { height: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .chip::before, .status-toggle::before,
+  .card-eye-btn::before, .delete-btn::before { display: none; }
+}
+
+/* ============================================================
    RESPONSIVE BREAKPOINTS
 ============================================================ */
 @media (max-width: 1024px) {
@@ -837,7 +891,10 @@ html, body {
           <div class="stat-value green">ACTIVE</div>
         </div>
       </div>
-      <div class="placeholder-block">ANALYTICS FEED // REAL-TIME DATA PENDING INTEGRATION</div>
+      <div class="placeholder-block">
+        <span class="ph-code">ANALYTICS FEED // REAL-TIME DATA PENDING INTEGRATION</span>
+        <span class="ph-th">ระบบกำลังเชื่อมต่อแหล่งข้อมูล — แดชบอร์ดวิเคราะห์แบบเรียลไทม์จะแสดงผลทันทีที่เชื่อมต่อสำเร็จ</span>
+      </div>
     </section>
 
     <!-- ── ANALYTICS ─────────────────────────────── -->
@@ -845,7 +902,10 @@ html, body {
       <div class="section-header">
         <div><h1 class="section-title">ANALYTICS</h1><div class="section-sub">DATA INTELLIGENCE // CE EMPIRE</div></div>
       </div>
-      <div class="placeholder-block">CHART ENGINE INITIALIZING // CONNECT DATA SOURCE TO RENDER</div>
+      <div class="placeholder-block">
+        <span class="ph-code">CHART ENGINE INITIALIZING // CONNECT DATA SOURCE TO RENDER</span>
+        <span class="ph-th">กำลังเตรียมเอนจินกราฟ — เชื่อมต่อแหล่งข้อมูลเพื่อเริ่มแสดงรายงานเชิงลึกและแนวโน้มย้อนหลัง</span>
+      </div>
     </section>
 
     <!-- ── FINANCIAL ─────────────────────────────── -->
@@ -917,7 +977,10 @@ html, body {
       <div class="section-header">
         <div><h1 class="section-title">TRANSACTIONS</h1><div class="section-sub">FINANCIAL HISTORY // CE EMPIRE</div></div>
       </div>
-      <div class="placeholder-block">TRANSACTION LEDGER // CONNECT FINANCIAL DATA SOURCE</div>
+      <div class="placeholder-block">
+        <span class="ph-code">TRANSACTION LEDGER // CONNECT FINANCIAL DATA SOURCE</span>
+        <span class="ph-th">บัญชีรายการเดินบัญชีจะปรากฏที่นี่ — เชื่อมต่อแหล่งข้อมูลการเงินเพื่อดูประวัติรายรับรายจ่ายทั้งหมด</span>
+      </div>
     </section>
 
     <!-- ── MANAGEMENT / AGENTS ───────────────────── -->
@@ -939,7 +1002,10 @@ html, body {
       <div class="section-header">
         <div><h1 class="section-title">REPORTS</h1><div class="section-sub">STRATEGIC ANALYSIS // CE EMPIRE</div></div>
       </div>
-      <div class="placeholder-block">REPORT GENERATOR // DATA SOURCES PENDING CONNECTION</div>
+      <div class="placeholder-block">
+        <span class="ph-code">REPORT GENERATOR // DATA SOURCES PENDING CONNECTION</span>
+        <span class="ph-th">เครื่องมือสร้างรายงานเชิงกลยุทธ์ — รอการเชื่อมต่อแหล่งข้อมูลเพื่อสรุปผลประกอบการรายวันและรายเดือน</span>
+      </div>
     </section>
 
     <!-- ── SYSTEM ─────────────────────────────────── -->
@@ -960,7 +1026,10 @@ html, body {
       <div class="section-header">
         <div><h1 class="section-title">SETTINGS</h1><div class="section-sub">CONFIGURATION PANEL</div></div>
       </div>
-      <div class="placeholder-block">CONFIGURATION MODULE // OPERATOR SETTINGS PENDING</div>
+      <div class="placeholder-block">
+        <span class="ph-code">CONFIGURATION MODULE // OPERATOR SETTINGS PENDING</span>
+        <span class="ph-th">โมดูลตั้งค่าระบบ — กำหนดค่าการแจ้งเตือน สิทธิ์ผู้ใช้งาน และการเชื่อมต่อ จะพร้อมให้ปรับแต่งเร็ว ๆ นี้</span>
+      </div>
     </section>
 
   </main><!-- #content-area -->
