@@ -268,12 +268,12 @@ html, body {
   min-height: 100vh; background: #0D0E12;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  padding: 40px 20px;
-  gap: 32px;
+  padding: clamp(24px, 6vh, 60px) 20px;
+  gap: clamp(16px, 3vh, 32px);
 }
 .entry-rings {
   position: relative;
-  width: clamp(200px, 30vw, 320px); height: clamp(200px, 30vw, 320px);
+  width: clamp(160px, 38vw, 320px); height: clamp(160px, 38vw, 320px);
   display: flex; align-items: center; justify-content: center;
 }
 .ring {
@@ -285,7 +285,7 @@ html, body {
 .ring-3 { width: 62%;  height: 62%;  animation: orbSpin 8s linear infinite; border-style: dashed; border-color: rgba(255,255,255,0.1); }
 .usdt-core {
   position: relative; z-index: 5;
-  width: 100px; height: 100px;
+  width: clamp(72px, 18vw, 100px); height: clamp(72px, 18vw, 100px);
   transform-style: preserve-3d;
   animation: coinSpin 4s ease-in-out infinite;
   filter: drop-shadow(0 0 24px var(--cyber-blue));
@@ -296,7 +296,7 @@ html, body {
   border-radius: 50%;
   background: radial-gradient(circle, #0d1a1e 0%, #060608 100%);
   border: 3px solid var(--cyber-blue);
-  font-family: 'Cinzel', 'Kanit', serif; font-size: 3rem;
+  font-family: 'Cinzel', 'Kanit', serif; font-size: clamp(2rem, 7vw, 3rem);
   color: var(--cyber-blue);
   text-shadow: 0 0 20px var(--cyber-blue), 0 0 40px var(--cyber-glow);
   box-shadow: 0 0 30px var(--cyber-glow), inset 0 0 20px rgba(0,240,255,0.1);
@@ -305,7 +305,7 @@ html, body {
 }
 .usdt-back { transform: rotateY(180deg); }
 .entry-quote-wrap {
-  text-align: center; max-width: 680px; min-height: 4em;
+  text-align: center; max-width: 680px; min-height: 2.6em;
   display: flex; align-items: center; justify-content: center; gap: 0;
   flex-wrap: wrap;
 }
@@ -860,10 +860,11 @@ html, body {
   .top-bar-center { display: none; }
   #top-bar-clock { display: block; font-size: 0.58rem; letter-spacing: 0.06em; }
 
-  /* Entry gate: tighten spacing so content is visible without scrolling */
-  #entry-gate { gap: 20px; padding: 28px 20px; }
-  .entry-quote-wrap { min-height: 3em; }
-  .entry-quote { font-size: clamp(0.88rem, 4vw, 1.1rem); }
+  /* Entry gate: tighten so ring + quote + CTA all fit in one screen */
+  #entry-gate { gap: 14px; padding: 20px 20px; }
+  .entry-rings { width: clamp(140px, 50vw, 220px); height: clamp(140px, 50vw, 220px); }
+  .entry-quote-wrap { min-height: 2.4em; }
+  .entry-quote { font-size: clamp(0.82rem, 3.8vw, 1rem); }
 
   /* CTA button: shrink letter-spacing, allow text to breathe on 360px */
   .cta-btn { padding: 16px 28px; letter-spacing: 0.15em; width: 100%; justify-content: center; max-width: 380px; }
@@ -1185,7 +1186,7 @@ html, body {
       </div>
       <div class="placeholder-block">
         <span class="ph-code">REPORT GENERATOR // DATA SOURCES PENDING CONNECTION</span>
-        <span class="ph-th">เ���รื่องมือสร้างรายงานเชิงกลยุทธ์ — รอการเชื่อมต่อแหล่งข้อมูลเพื่อสรุปผลประกอบการรายวันและรายเดือน</span>
+        <span class="ph-th">เครื่องมือสร้างรายงานเชิงกลยุทธ์ — รอการเชื่อมต่อแหล่งข้อมูลเพื่อสรุปผลประกอบการรายวันและรายเดือน</span>
       </div>
     </section>
 
@@ -1334,7 +1335,7 @@ const SpeechEngine = (() => {
   return { speak };
 })();
 
-/* ════════════════════════════════════════════════════
+/* ═══════════════════════════════════��════════════════
    QUOTE ENGINE
 ════════════════════════════════════════════════════ */
 const QuoteEngine = (() => {
