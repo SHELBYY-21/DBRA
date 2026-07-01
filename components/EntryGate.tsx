@@ -108,7 +108,7 @@ function useAudio() {
 /* ── HUD rings ── */
 function HudRings({ children }: { children: React.ReactNode }) {
   return (
-    <div className="hud-rings" style={{ width: 260, height: 260 }}>
+    <div className="hud-rings" style={{ width: 200, height: 200 }}>
       {/* Outermost ring — slow cyan pulse */}
       <div className="hud-ring" style={{
         inset: 0,
@@ -164,7 +164,7 @@ function HudRings({ children }: { children: React.ReactNode }) {
 function CEEmblem() {
   return (
     <div style={{
-      width: 88, height: 88,
+      width: 72, height: 72,
       borderRadius: "50%",
       background: "radial-gradient(circle at 35% 30%, #FFD77B, #D8B46B 40%, #AA771C 80%)",
       border: "2px solid rgba(255,215,123,0.6)",
@@ -248,14 +248,14 @@ export default function EntryGate({ onEnter }: Props) {
 
       {/* Content */}
       <div
-        className="relative flex flex-col items-center gap-6"
+        className="relative flex flex-col items-center gap-4"
         style={{ zIndex: 1, width: "min(430px, 100vw)", padding: "0 24px" }}
       >
         {/* Brand name */}
         <div className="flex flex-col items-center gap-1" style={{ animation: "fadeUp 0.6s ease both" }}>
           <div style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "clamp(2rem,8vw,2.8rem)",
+            fontSize: "clamp(1.7rem,7vw,2.2rem)",
             fontWeight: 700,
             letterSpacing: "0.25em",
             lineHeight: 1,
@@ -280,10 +280,10 @@ export default function EntryGate({ onEnter }: Props) {
         </div>
 
         {/* Thai welcome */}
-        <div className="flex flex-col items-center gap-1" style={{ animation: "fadeUp 0.6s ease 0.4s both", textAlign: "center" }}>
+        <div className="flex flex-col items-center gap-0.5" style={{ animation: "fadeUp 0.6s ease 0.4s both", textAlign: "center" }}>
           <p style={{
             fontFamily: "'Sarabun', sans-serif",
-            fontSize: "1rem",
+            fontSize: "0.9rem",
             fontWeight: 300,
             color: "rgba(240,242,245,0.6)",
             letterSpacing: "0.04em",
@@ -292,9 +292,9 @@ export default function EntryGate({ onEnter }: Props) {
           </p>
           <p style={{
             fontFamily: "'Sarabun', sans-serif",
-            fontSize: "0.78rem",
+            fontSize: "0.72rem",
             fontWeight: 300,
-            color: "rgba(240,242,245,0.35)",
+            color: "rgba(240,242,245,0.3)",
             letterSpacing: "0.02em",
           }}>
             สร้าง &bull; เติบโต &bull; เสริมพลัง ไปด้วยกัน
@@ -302,7 +302,7 @@ export default function EntryGate({ onEnter }: Props) {
         </div>
 
         {/* Loading / Enter */}
-        <div className="w-full flex flex-col items-center gap-4" style={{ animation: "fadeUp 0.6s ease 0.5s both" }}>
+        <div className="w-full flex flex-col items-center gap-3" style={{ animation: "fadeUp 0.6s ease 0.5s both" }}>
           {phase === "loading" && (
             <>
               {/* Progress bar */}
