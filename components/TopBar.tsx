@@ -1,82 +1,100 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Bell, Search } from "lucide-react";
 
-export default function TopBar({ onMenuToggle }: { onMenuToggle: () => void }) {
+export default function TopBar({ section }: { section?: string }) {
   const [time, setTime] = useState("");
-  const [date, setDate] = useState("");
 
   useEffect(() => {
     function tick() {
       const now = new Date();
-      setTime(now.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }));
-      setDate(now.toLocaleDateString("th-TH", { year: "numeric", month: "short", day: "numeric" }));
+      setTime(now.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", hour12: false }));
     }
     tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(tick, 10000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 md:px-6"
-      style={{
-        height: 52,
-        background: "rgba(3,4,10,0.95)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
-        borderBottom: "1px solid rgba(0,255,231,0.14)",
-        boxShadow: "0 1px 0 rgba(0,255,231,0.06), 0 4px 24px rgba(0,0,0,0.6)",
-      }}
-    >
-      {/* Left — logo + menu toggle */}
+    <header className="lux-header">
+      {/* Logo */}
+      <div className="flex items-center gap-2.5">
+        <div style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "radial-gradient(circle at 35% 30%, #FFD77B, #D8B46B 45%, #AA771C)",
+          border: "1px solid rgba(255,215,123,0.4)",
+          boxShadow: "0 0 14px rgba(216,180,107,0.35)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          flexShrink: 0,
+        }}>
+          <span style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "0.85rem", fontWeight: 700,
+            color: "rgba(3,6,13,0.9)",
+          }}>C</span>
+        </div>
+        <div>
+          <div style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "1rem", fontWeight: 700, letterSpacing: "0.12em",
+            lineHeight: 1,
+          }} className="gold-text">C.E. EMPIRE</div>
+          <div style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.52rem", color: "rgba(255,255,255,0.28)",
+            letterSpacing: "0.1em", marginTop: 1,
+          }}>
+            {section?.toUpperCase() ?? "COMMAND CENTER"}
+          </div>
+        </div>
+      </div>
+
+      {/* Right actions */}
       <div className="flex items-center gap-3">
-        <button
-          onClick={onMenuToggle}
-          className="md:hidden flex flex-col gap-1 cursor-pointer"
-          aria-label="Toggle menu"
-          style={{ background: "none", border: "none", padding: 4 }}
-        >
-          {[0,1,2].map(i => (
-            <span key={i} className="block" style={{ width: 20, height: 1, background: "#00ffe7", boxShadow: "0 0 4px #00ffe7" }} />
-          ))}
+        <div style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: "0.75rem",
+          color: "rgba(216,180,107,0.7)",
+        }}>{time}</div>
+
+        <button style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer",
+        }} aria-label="Search">
+          <Search size={15} color="rgba(255,255,255,0.5)" />
         </button>
-        <div className="flex items-center gap-2">
-          <span className="led led-neon" />
-          <span
-            style={{ fontFamily: "'Syncopate','Kanit',sans-serif", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.3em" }}
-            className="gold-text hidden sm:inline"
-          >
-            CE EMPIRE
-          </span>
-          <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: "0.52rem", color: "rgba(0,255,231,0.5)", letterSpacing: "0.1em" }}>
-            v3.1
-          </span>
-        </div>
-      </div>
 
-      {/* Center — status chips */}
-      <div className="hidden md:flex items-center gap-4" style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: "0.58rem", letterSpacing: "0.1em" }}>
-        <span className="flex items-center gap-1.5" style={{ color: "rgba(0,255,231,0.6)" }}>
-          <span className="led led-neon" style={{ width: 5, height: 5 }} />
-          COMMAND CENTER ONLINE
-        </span>
-        <span style={{ color: "rgba(0,255,231,0.2)" }}>|</span>
-        <span style={{ color: "rgba(232,184,75,0.7)" }}>GROK AI [CONNECTED]</span>
-        <span style={{ color: "rgba(0,255,231,0.2)" }}>|</span>
-        <span style={{ color: "rgba(0,255,231,0.5)" }}>SHA-256 ACTIVE</span>
-      </div>
+        <button style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer", position: "relative",
+        }} aria-label="Notifications">
+          <Bell size={15} color="rgba(255,255,255,0.5)" />
+          <span style={{
+            position: "absolute", top: 6, right: 6,
+            width: 7, height: 7, borderRadius: "50%",
+            background: "#FF5C5C", border: "1.5px solid #03060D",
+            boxShadow: "0 0 6px #FF5C5C",
+          }} />
+        </button>
 
-      {/* Right — clock */}
-      <div className="flex items-center gap-3" style={{ fontFamily: "'Share Tech Mono',monospace" }}>
-        <div className="text-right">
-          <div style={{ fontSize: "0.78rem", color: "#00ffe7", textShadow: "0 0 8px rgba(0,255,231,0.5)", letterSpacing: "0.08em" }}>{time}</div>
-          <div style={{ fontSize: "0.5rem", color: "rgba(0,255,231,0.4)", letterSpacing: "0.06em" }}>{date}</div>
-        </div>
-        <div style={{ width: 1, height: 28, background: "rgba(0,255,231,0.15)" }} />
-        <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ border: "1px solid rgba(0,255,231,0.3)", background: "rgba(0,255,231,0.05)", fontFamily: "'Cinzel',serif", fontSize: "0.7rem", color: "#00ffe7" }}>
-          C
-        </div>
+        {/* Avatar */}
+        <div style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "linear-gradient(135deg, rgba(216,180,107,0.2), rgba(216,180,107,0.08))",
+          border: "1.5px solid rgba(216,180,107,0.35)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: "0.9rem", fontWeight: 700,
+          color: "#D8B46B",
+          cursor: "pointer",
+        }}>E</div>
       </div>
     </header>
   );

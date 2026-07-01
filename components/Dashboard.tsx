@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import TopBar from "@/components/TopBar";
-import Sidebar, { Section as NavSection } from "@/components/Sidebar";
+import BottomNav, { Section as NavSection } from "@/components/Sidebar";
 import TickerBar from "@/components/TickerBar";
 
 import SectionOverview    from "@/components/sections/SectionOverview";
@@ -13,6 +13,17 @@ import SectionAgents      from "@/components/sections/SectionAgents";
 import SectionReports     from "@/components/sections/SectionReports";
 import SectionSystem      from "@/components/sections/SectionSystem";
 import SectionSettings    from "@/components/sections/SectionSettings";
+
+const SECTION_LABELS: Record<NavSection, string> = {
+  overview:     "หน้าหลัก",
+  analytics:    "วิเคราะห์",
+  financial:    "การเงิน",
+  transactions: "ธุรกรรม",
+  management:   "ทีมงาน",
+  reports:      "รายงาน",
+  system:       "ระบบ",
+  settings:     "ตั้งค่า",
+};
 
 function useNavSound() {
   const ctxRef = useRef<AudioContext | null>(null);
@@ -29,14 +40,14 @@ function useNavSound() {
       const now = c.currentTime;
       const osc = c.createOscillator();
       const env = c.createGain();
-      osc.type = "square";
-      osc.frequency.setValueAtTime(1600, now);
-      osc.frequency.exponentialRampToValueAtTime(2400, now + 0.04);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
       env.gain.setValueAtTime(0, now);
-      env.gain.linearRampToValueAtTime(0.2, now + 0.005);
-      env.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      env.gain.linearRampToValueAtTime(0.15, now + 0.005);
+      env.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
       osc.connect(env); env.connect(c.destination);
-      osc.start(now); osc.stop(now + 0.065);
+      osc.start(now); osc.stop(now + 0.09);
     } catch (_) {}
   }, []);
 }
@@ -54,49 +65,41 @@ const SECTION_MAP: Record<NavSection, React.ReactNode> = {
 
 export default function Dashboard() {
   const [active, setActive] = useState<NavSection>("overview");
-  const [mobileOpen, setMobileOpen] = useState(false);
   const navSound = useNavSound();
 
   return (
-    <div className="min-h-screen" style={{ background: "#03040a" }}>
-      {/* Background layers */}
-      <div className="pointer-events-none fixed inset-0 neon-grid" style={{ zIndex: 0 }} />
-      <div className="pointer-events-none fixed inset-0 scanlines opacity-20" style={{ zIndex: 0 }} />
+    <div style={{ background: "#03060D", minHeight: "100vh" }}>
+      {/* Subtle ambient radial */}
       <div
-        className="pointer-events-none fixed inset-0"
-        style={{ zIndex: 0, background: "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(0,255,231,0.03) 0%, transparent 70%)" }}
+        aria-hidden="true"
+        style={{
+          position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+          background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(216,180,107,0.04) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
+          background: "radial-gradient(ellipse 50% 40% at 80% 80%, rgba(0,217,255,0.03) 0%, transparent 60%)",
+        }}
       />
 
-      <TopBar onMenuToggle={() => setMobileOpen(o => !o)} />
+      <TopBar section={SECTION_LABELS[active]} />
 
-      <Sidebar
-        active={active}
-        onNavigate={setActive}
-        mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
-        onNavSound={navSound}
-      />
-
-      {/* Main content — sidebar is 240px wide, fixed */}
       <main
         key={active}
-        style={{
-          paddingTop: 72,
-          paddingBottom: 52,
-          paddingLeft: 16,
-          paddingRight: 16,
-          minHeight: "100vh",
-          position: "relative",
-          zIndex: 1,
-          animation: "panelRise 0.25s ease both",
-        }}
+        className="page-wrap"
+        style={{ position: "relative", zIndex: 1, animation: "panelRise 0.3s ease both" }}
       >
-        {/* On md+, offset left by sidebar width (240px) + gap (16px) */}
-        <style>{`@media (min-width:768px){.dash-main{padding-left:264px!important;padding-right:24px!important;}}`}</style>
-        <div className="dash-main" style={{ maxWidth: 1280, margin: "0 auto" }}>
-          {SECTION_MAP[active]}
-        </div>
+        {SECTION_MAP[active]}
       </main>
+
+      <BottomNav
+        active={active}
+        onNavigate={setActive}
+        onNavSound={navSound}
+      />
 
       <TickerBar />
     </div>

@@ -1,87 +1,197 @@
 "use client";
 
-import { Section, SectionHeader, GlassCard, Badge } from "@/components/ui";
-import { ArrowUpRight, ArrowDownLeft, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowUpRight, ArrowDownLeft, Clock, CheckCircle,
+  XCircle, Search, Filter, Download,
+} from "lucide-react";
+import { Section, SectionHeader, GlassCard, Badge, useToast } from "@/components/ui";
 
-const TXN = [
-  { id: "TX-8841", time: "09:14:22", type: "OUT", agent: "Alpha", amount: "฿84,000", status: "SUCCESS", note: "ปิดดีล Sector A" },
-  { id: "TX-8840", time: "09:12:05", type: "IN",  agent: "Delta", amount: "฿210,000", status: "SUCCESS", note: "รับเงินจาก Client B" },
-  { id: "TX-8839", time: "09:08:47", type: "OUT", agent: "Beta",  amount: "฿42,000", status: "SUCCESS", note: "ค่าดำเนินการ" },
-  { id: "TX-8838", time: "09:05:30", type: "IN",  agent: "Delta", amount: "฿96,000", status: "SUCCESS", note: "Commission Q2" },
-  { id: "TX-8837", time: "08:58:11", type: "OUT", agent: "Alpha", amount: "฿18,000", status: "PENDING", note: "กำลังดำเนินการ..." },
-  { id: "TX-8836", time: "08:52:44", type: "OUT", agent: "Zeta",  amount: "฿55,000", status: "FAILED",  note: "ยกเลิก — ข้อผิดพลาด" },
-  { id: "TX-8835", time: "08:44:02", type: "IN",  agent: "Beta",  amount: "฿130,000", status: "SUCCESS", note: "Settlement D" },
-  { id: "TX-8834", time: "08:30:18", type: "OUT", agent: "Epsilon", amount: "฿27,000", status: "SUCCESS", note: "Transfer fees" },
+const ALL_TXN = [
+  { id: "TX-8841", time: "09:14", type: "IN",  agent: "Alpha",   amount: 84000,  status: "SUCCESS", note: "ปิดดีล Sector A" },
+  { id: "TX-8840", time: "09:12", type: "IN",  agent: "Delta",   amount: 210000, status: "SUCCESS", note: "รับเงินจาก Client B" },
+  { id: "TX-8839", time: "09:08", type: "OUT", agent: "Beta",    amount: 42000,  status: "SUCCESS", note: "ค่าดำเนินการ" },
+  { id: "TX-8838", time: "09:05", type: "IN",  agent: "Delta",   amount: 96000,  status: "SUCCESS", note: "Commission Q2" },
+  { id: "TX-8837", time: "08:58", type: "OUT", agent: "Alpha",   amount: 18000,  status: "PENDING", note: "กำลังดำเนินการ" },
+  { id: "TX-8836", time: "08:52", type: "OUT", agent: "Zeta",    amount: 55000,  status: "FAILED",  note: "ยกเลิก — ข้อผิดพลาด" },
+  { id: "TX-8835", time: "08:44", type: "IN",  agent: "Beta",    amount: 130000, status: "SUCCESS", note: "Settlement D" },
+  { id: "TX-8834", time: "08:30", type: "OUT", agent: "Epsilon", amount: 27000,  status: "SUCCESS", note: "Transfer fees" },
+  { id: "TX-8833", time: "08:15", type: "IN",  agent: "Alpha",   amount: 175000, status: "SUCCESS", note: "รับเงิน VIP Client" },
+  { id: "TX-8832", time: "07:50", type: "OUT", agent: "Zeta",    amount: 62000,  status: "SUCCESS", note: "ค่าบริการ Q2" },
 ];
 
-const statusColor: Record<string, string> = {
-  SUCCESS: "#00ff88",
-  PENDING: "#e8b84b",
-  FAILED:  "#ff2a6d",
+const STATUS_CONFIG = {
+  SUCCESS: { color: "#37D67A", icon: <CheckCircle size={13} />, label: "success" as const },
+  PENDING: { color: "#FFB648", icon: <Clock size={13} />,       label: "warning" as const },
+  FAILED:  { color: "#FF5C5C", icon: <XCircle size={13} />,    label: "danger"  as const },
 };
 
 export default function SectionTransactions() {
-  const totalIn  = TXN.filter(t => t.type === "IN" && t.status === "SUCCESS").reduce((s, t) => s + parseInt(t.amount.replace(/[฿,]/g,"")), 0);
-  const totalOut = TXN.filter(t => t.type === "OUT" && t.status === "SUCCESS").reduce((s, t) => s + parseInt(t.amount.replace(/[฿,]/g,"")), 0);
+  const [filter, setFilter] = useState<"ALL" | "IN" | "OUT">("ALL");
+  const [search, setSearch] = useState("");
+  const { show, ToastEl } = useToast();
+
+  const filtered = ALL_TXN.filter(t => {
+    if (filter !== "ALL" && t.type !== filter) return false;
+    if (search && !`${t.id} ${t.agent} ${t.note}`.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  const totalIn  = ALL_TXN.filter(t => t.type === "IN"  && t.status === "SUCCESS").reduce((s, t) => s + t.amount, 0);
+  const totalOut = ALL_TXN.filter(t => t.type === "OUT" && t.status === "SUCCESS").reduce((s, t) => s + t.amount, 0);
+  const pending  = ALL_TXN.filter(t => t.status === "PENDING").length;
+
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(ALL_TXN, null, 2)], { type: "application/json" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = "ce-transactions.json"; a.click();
+    URL.revokeObjectURL(url);
+    show("ส่งออก JSON สำเร็จ", "success");
+  }
 
   return (
     <Section>
-      <SectionHeader title="ธุรกรรม" sub="CE EMPIRE // Transaction Log" />
+      {ToastEl}
+      <SectionHeader title="ธุรกรรม" sub="CE EMPIRE // TRANSACTION LOG">
+        <button
+          onClick={exportJSON}
+          className="glow-btn"
+          style={{ display: "flex", alignItems: "center", gap: 6 }}
+        >
+          <Download size={12} />
+          Export JSON
+        </button>
+      </SectionHeader>
 
+      {/* Summary row */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "เงินเข้า", value: `฿${totalIn.toLocaleString()}`, color: "#00ff88", icon: <ArrowDownLeft size={12} /> },
-          { label: "เงินออก", value: `฿${totalOut.toLocaleString()}`, color: "#ff2a6d", icon: <ArrowUpRight size={12} /> },
-          { label: "สุทธิ", value: `฿${(totalIn - totalOut).toLocaleString()}`, color: "#e8b84b", icon: <RefreshCw size={12} /> },
+          { label: "เงินเข้า",  value: `฿${(totalIn/1000).toFixed(0)}k`,  color: "#37D67A", icon: <ArrowDownLeft size={14} /> },
+          { label: "เงินออก",  value: `฿${(totalOut/1000).toFixed(0)}k`, color: "#FF5C5C", icon: <ArrowUpRight size={14} />  },
+          { label: "รอดำเนิน", value: `${pending}`,                       color: "#FFB648", icon: <Clock size={14} />         },
         ].map(s => (
-          <div key={s.label} className="glass p-3 flex flex-col gap-1">
-            <div className="flex items-center gap-1.5" style={{ color: s.color }}>{s.icon}<span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: "0.5rem", letterSpacing: "0.1em", color: "#4a5068" }}>{s.label}</span></div>
-            <span style={{ fontFamily: "'Orbitron',sans-serif", fontSize: "1rem", fontWeight: 700, color: s.color, textShadow: `0 0 10px ${s.color}40` }}>{s.value}</span>
+          <div key={s.label} className="lux-card" style={{ padding: "14px 12px" }}>
+            <div style={{ color: s.color, marginBottom: 6 }}>{s.icon}</div>
+            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: "1.1rem", fontWeight: 700, color: s.color }}>
+              {s.value}
+            </div>
+            <div style={{ fontFamily: "'Sarabun',sans-serif", fontSize: "0.7rem", color: "rgba(255,255,255,0.35)", marginTop: 2 }}>
+              {s.label}
+            </div>
           </div>
         ))}
       </div>
 
-      <GlassCard className="overflow-hidden">
-        <div className="p-3 border-b" style={{ borderColor: "rgba(0,255,231,0.08)" }}>
-          <span style={{ fontFamily: "'Orbitron',sans-serif", fontSize: "0.62rem", fontWeight: 700, color: "#00ffe7", letterSpacing: "0.1em" }}>TRANSACTION LOG</span>
+      {/* Search + filter */}
+      <div className="flex gap-2">
+        <div style={{ flex: 1, position: "relative" }}>
+          <Search size={14} style={{
+            position: "absolute", left: 12, top: "50%",
+            transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)",
+          }} />
+          <input
+            className="lux-input"
+            style={{ paddingLeft: 36 }}
+            placeholder="ค้นหา TX ID, Agent, หมายเหตุ..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full" style={{ borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ borderBottom: "1px solid rgba(0,255,231,0.08)" }}>
-                {["TX ID", "เวลา", "Type", "Agent", "จำนวน", "Status", "หมายเหตุ"].map(h => (
-                  <th key={h} style={{ padding: "8px 12px", textAlign: "left", fontFamily: "'Share Tech Mono',monospace", fontSize: "0.48rem", color: "#4a5068", letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {TXN.map((t, i) => (
-                <tr key={t.id} style={{ borderBottom: i < TXN.length - 1 ? "1px solid rgba(0,255,231,0.04)" : "none", background: "transparent" }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,255,231,0.025)")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
-                >
-                  <td style={{ padding: "8px 12px", fontFamily: "'Share Tech Mono',monospace", fontSize: "0.55rem", color: "#00ffe7", whiteSpace: "nowrap" }}>{t.id}</td>
-                  <td style={{ padding: "8px 12px", fontFamily: "'Share Tech Mono',monospace", fontSize: "0.52rem", color: "#4a5068", whiteSpace: "nowrap" }}>{t.time}</td>
-                  <td style={{ padding: "8px 12px" }}>
-                    <span className="flex items-center gap-1" style={{ color: t.type === "IN" ? "#00ff88" : "#ff2a6d", fontFamily: "'Share Tech Mono',monospace", fontSize: "0.55rem" }}>
-                      {t.type === "IN" ? <ArrowDownLeft size={10} /> : <ArrowUpRight size={10} />}
-                      {t.type}
-                    </span>
-                  </td>
-                  <td style={{ padding: "8px 12px", fontFamily: "'Share Tech Mono',monospace", fontSize: "0.55rem", color: "#e8eaf6", whiteSpace: "nowrap" }}>{t.agent}</td>
-                  <td style={{ padding: "8px 12px", fontFamily: "'Orbitron',sans-serif", fontSize: "0.65rem", fontWeight: 700, color: t.type === "IN" ? "#00ff88" : "#e8eaf6", whiteSpace: "nowrap" }}>{t.amount}</td>
-                  <td style={{ padding: "8px 12px" }}>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 7px", borderRadius: 3, border: `1px solid ${statusColor[t.status]}30`, background: `${statusColor[t.status]}10`, fontFamily: "'Share Tech Mono',monospace", fontSize: "0.48rem", color: statusColor[t.status], letterSpacing: "0.08em" }}>
-                      <span style={{ width: 4, height: 4, borderRadius: "50%", background: statusColor[t.status] }} />
-                      {t.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: "8px 12px", fontFamily: "'Kanit',sans-serif", fontSize: "0.68rem", fontWeight: 300, color: "#4a5068" }}>{t.note}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <button
+          onClick={() => show("Filter — เร็ว ๆ นี้", "warning")}
+          className="glow-btn"
+          style={{ display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap" }}
+        >
+          <Filter size={12} />
+        </button>
+      </div>
+
+      {/* Type tabs */}
+      <div className="flex gap-2">
+        {(["ALL", "IN", "OUT"] as const).map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            style={{
+              padding: "7px 16px", borderRadius: 10,
+              border: "1px solid",
+              borderColor: filter === f ? "rgba(216,180,107,0.4)" : "rgba(255,255,255,0.08)",
+              background: filter === f ? "rgba(216,180,107,0.1)" : "transparent",
+              color: filter === f ? "#D8B46B" : "rgba(255,255,255,0.35)",
+              fontFamily: "'JetBrains Mono',monospace",
+              fontSize: "0.65rem", letterSpacing: "0.1em",
+              cursor: "pointer", transition: "all 0.18s ease",
+            }}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
+      {/* Transaction list */}
+      <GlassCard style={{ padding: "4px 0" }}>
+        {filtered.length === 0 ? (
+          <div style={{ padding: "32px 18px", textAlign: "center", color: "rgba(255,255,255,0.25)", fontFamily: "'Sarabun',sans-serif", fontSize: "0.85rem" }}>
+            ไม่พบรายการ
+          </div>
+        ) : (
+          filtered.map((t, i) => {
+            const isIn = t.type === "IN";
+            const sc   = STATUS_CONFIG[t.status as keyof typeof STATUS_CONFIG];
+            return (
+              <div
+                key={t.id}
+                className="txn-row"
+                style={{
+                  padding: "12px 18px",
+                  borderBottom: i < filtered.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                  animationDelay: `${i * 0.04}s`,
+                  cursor: "pointer",
+                }}
+                onClick={() => show(`${t.id} — ฿${t.amount.toLocaleString()} [${t.status}]`, sc.label)}
+              >
+                <div className="icon-circle" style={{
+                  background: isIn ? "rgba(55,214,122,0.1)" : "rgba(255,92,92,0.1)",
+                  borderColor: isIn ? "rgba(55,214,122,0.2)" : "rgba(255,92,92,0.2)",
+                }}>
+                  {isIn
+                    ? <ArrowDownLeft size={15} color="#37D67A" />
+                    : <ArrowUpRight size={15}  color="#FF5C5C" />
+                  }
+                </div>
+
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div className="flex items-center gap-2">
+                    <span style={{
+                      fontFamily: "'JetBrains Mono',monospace",
+                      fontSize: "0.65rem", fontWeight: 700, color: "#F0F2F5",
+                    }}>{t.id}</span>
+                    <span style={{ color: sc.color }}>{sc.icon}</span>
+                  </div>
+                  <div style={{
+                    fontFamily: "'Sarabun',sans-serif",
+                    fontSize: "0.78rem", color: "rgba(255,255,255,0.45)",
+                    whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                  }}>{t.note}</div>
+                  <div style={{
+                    fontFamily: "'JetBrains Mono',monospace",
+                    fontSize: "0.58rem", color: "rgba(255,255,255,0.22)",
+                  }}>{t.agent} &bull; {t.time}</div>
+                </div>
+
+                <div style={{
+                  fontFamily: "'JetBrains Mono',monospace",
+                  fontSize: "0.88rem", fontWeight: 700,
+                  color: isIn ? "#37D67A" : "#FF5C5C",
+                  whiteSpace: "nowrap",
+                }}>
+                  {isIn ? "+" : "-"}฿{t.amount.toLocaleString()}
+                </div>
+              </div>
+            );
+          })
+        )}
       </GlassCard>
     </Section>
   );
