@@ -10,8 +10,8 @@ function AreaChart() {
 
   useEffect(() => {
     let cancelled = false;
-    import("chart.js").then(({ Chart, CategoryScale, LinearScale, LineElement, PointElement, Filler, Tooltip }) => {
-      Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Filler, Tooltip);
+    import("chart.js").then(({ Chart, CategoryScale, LinearScale, LineController, LineElement, PointElement, Filler, Tooltip }) => {
+      Chart.register(CategoryScale, LinearScale, LineController, LineElement, PointElement, Filler, Tooltip);
       if (cancelled || !canvasRef.current) return;
       if (chartRef.current) (chartRef.current as { destroy(): void }).destroy();
 

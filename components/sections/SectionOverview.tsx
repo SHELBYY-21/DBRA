@@ -16,10 +16,17 @@ function MixedChart() {
     let cancelled = false;
 
     import("chart.js").then(({
-      Chart, CategoryScale, LinearScale, BarElement, LineElement,
+      Chart, CategoryScale, LinearScale,
+      BarController, BarElement,
+      LineController, LineElement,
       PointElement, Tooltip, Legend, Filler,
     }) => {
-      Chart.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend, Filler);
+      Chart.register(
+        CategoryScale, LinearScale,
+        BarController, BarElement,
+        LineController, LineElement,
+        PointElement, Tooltip, Legend, Filler,
+      );
       if (cancelled || !canvasRef.current) return;
       if (chartRef.current) (chartRef.current as { destroy: () => void }).destroy();
 

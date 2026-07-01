@@ -49,7 +49,7 @@ interface StatCardProps {
   value: string;
   sub?: string;
   pct?: number;
-  color?: "gold" | "cyan" | "success" | "danger" | "warning";
+  color?: "gold" | "cyan" | "success" | "danger" | "warning" | "dim";
   icon?: ReactNode;
 }
 
@@ -59,6 +59,7 @@ const STAT_COLORS = {
   success: { main: "#37D67A", hi: "#37D67A", dim: "rgba(55,214,122,0.1)",   glow: "rgba(55,214,122,0.3)" },
   danger:  { main: "#FF5C5C", hi: "#FF5C5C", dim: "rgba(255,92,92,0.1)",   glow: "rgba(255,92,92,0.3)" },
   warning: { main: "#FFB648", hi: "#FFB648", dim: "rgba(255,182,72,0.1)",   glow: "rgba(255,182,72,0.3)" },
+  dim:     { main: "rgba(255,255,255,0.4)", hi: "rgba(255,255,255,0.6)", dim: "rgba(255,255,255,0.05)", glow: "rgba(255,255,255,0.15)" },
 };
 
 export function StatCard({ label, value, sub, pct, color = "gold", icon }: StatCardProps) {
