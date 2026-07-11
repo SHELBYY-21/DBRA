@@ -1,29 +1,33 @@
-import type { Metadata, Viewport } from "next";
-import "./ce-empire.css";
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+
+const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: "CE EMPIRE — Command Center",
-  description: "CE Empire cyberpunk fintech command center dashboard",
-};
+  title: 'Quarterline | Sales Operations',
+  description: 'A focused SalesOps command center with an AI-powered pipeline copilot.',
+  generator: 'v0.app',
+}
 
 export const viewport: Viewport = {
-  themeColor: "#03040a",
-  width: "device-width",
-  initialScale: 1,
-};
+  colorScheme: 'light dark',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f4f6f3' },
+    { media: '(prefers-color-scheme: dark)', color: '#111512' },
+  ],
+  userScalable: true,
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="th" className="bg-[#03040a]">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=Cinzel:wght@400;600;700&family=Syncopate:wght@400;700&family=Kanit:wght@300;400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={`bg-background ${geistSans.variable} ${geistMono.variable}`}>
+      <body className="font-sans antialiased">
+        {children}
+        {process.env.NODE_ENV === 'production' && <Analytics />}
+      </body>
     </html>
-  );
+  )
 }
