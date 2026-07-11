@@ -66,6 +66,10 @@ const SECTION_MAP: Record<NavSection, React.ReactNode> = {
 export default function Dashboard() {
   const [active, setActive] = useState<NavSection>("overview");
   const navSound = useNavSound();
+  const handleNavigate = useCallback((section: NavSection) => {
+    setActive(section);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div style={{ background: "#03060D", minHeight: "100vh" }}>
@@ -97,7 +101,7 @@ export default function Dashboard() {
 
       <BottomNav
         active={active}
-        onNavigate={setActive}
+        onNavigate={handleNavigate}
         onNavSound={navSound}
       />
 
