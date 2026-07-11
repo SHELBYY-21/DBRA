@@ -103,6 +103,51 @@ Convert ambiguous goals into a structured, trackable plan with clear milestones,
 - **Plan and reality have diverged silently:** Declare a re-planning session, archive the stale plan, and rebuild from current truth rather than patching.
 - **Repeated estimate misses:** Multiply future estimates by the observed miss ratio until calibration improves.
 
+## Control System
+
+### Planning horizons
+
+Use different detail by horizon:
+
+- Current milestone: task-level detail and named owners.
+- Next milestone: deliverables, dependencies, and likely owners.
+- Later milestones: outcomes and major risks only.
+
+Do not create precise task plans for work whose inputs are still unknown.
+
+### Status evidence
+
+A status claim must be supported by one of:
+
+- A completed and accepted deliverable.
+- A passing verification result.
+- A measured progress indicator.
+- A confirmed dependency date.
+- A documented blocker with owner and next action.
+
+Percent-complete estimates without evidence are not status.
+
+### Change control
+
+1. Record the requested change.
+2. Estimate impact on scope, date, cost, and risk.
+3. Identify the decision owner.
+4. Present the required trade-off.
+5. Approve, reject, or defer explicitly.
+6. Update the canonical plan and communicate the delta.
+
+### Meeting discipline
+
+Every project meeting needs a decision, coordination, or risk-removal purpose. Publish the agenda, capture decisions and owners, and cancel recurring meetings that produce no actions.
+
+### Health indicators
+
+Track milestone predictability, blocked-task age, cycle time, escaped defects, scope change rate, and unresolved high risks. Use trends rather than isolated snapshots.
+
+### Closure
+
+At completion, confirm acceptance, transfer ownership, archive decisions, document remaining risks, reconcile budget and scope, and run a short retrospective with assigned improvements.
+
 ## Checklist
 
 - [ ] Definition of done is written and measurable

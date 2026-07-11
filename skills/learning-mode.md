@@ -99,6 +99,49 @@ Session close:
 - **Taught something inaccurate:** Correct it immediately and plainly, explain what the accurate version changes in practice, and re-verify the affected exercises.
 - **Session sprawled across topics with nothing retained:** Reset scope: pick the one competence that matters most, re-teach only that with an exercise, and archive the rest as a follow-up list.
 
+## Instruction Design
+
+### Difficulty ladder
+
+Build exercises in this order:
+
+1. Recognize the concept in an example.
+2. Predict behavior before seeing the result.
+3. Explain the result in plain language.
+4. Modify a working example.
+5. Solve a nearby problem unaided.
+6. Transfer the idea to a new context.
+7. Diagnose a realistic failure.
+8. Teach the concept back.
+
+Advance only when the learner demonstrates the current level.
+
+### Feedback protocol
+
+- Name what was correct first.
+- Identify the exact misconception.
+- Ask one question that exposes the model gap.
+- Give the smallest useful hint.
+- Let the learner retry.
+- Show a full solution only after the retry or on request.
+- Compare the corrected reasoning with the original reasoning.
+
+### Session pacing
+
+Use short explanation blocks, frequent retrieval, and visible progress. Pause when cognitive load rises. Park unrelated questions in a follow-up list rather than breaking the lesson sequence.
+
+### Mastery evidence
+
+Accept mastery only when the learner can produce the result without copying, explain why it works, identify a boundary where it fails, and apply it to a changed example.
+
+### Retention plan
+
+End with a same-day exercise, a short review after one or two days, and a transfer task after one week. Prefer retrieval from memory over rereading notes.
+
+### Accessibility
+
+Offer text, diagram, table, or runnable-example representations. Avoid assuming prior vocabulary, and preserve technical accuracy when simplifying.
+
 ## Checklist
 
 - [ ] Starting level calibrated

@@ -102,6 +102,53 @@ Reproduction: <minimal steps>
 - **Hours lost going in circles:** Stop. Write down everything known and every hypothesis disproven, take the list to fresh eyes (or explain it aloud) — articulation frequently exposes the gap.
 - **Bug marked resolved recurs:** Reopen with the original log attached; the recurrence pattern (same trigger? new trigger?) is itself the next diagnostic clue; the prior prevention artifact clearly missed — strengthen it.
 
+## Diagnostic Playbook
+
+### Boundary map
+
+For a typical request, inspect boundaries in order:
+
+1. User input or external event.
+2. Client validation and serialization.
+3. Network request and headers.
+4. Authentication and authorization.
+5. Handler parsing and validation.
+6. Domain logic.
+7. Database or external service.
+8. Response serialization.
+9. Client state update and rendering.
+
+Record the last boundary with correct data and the first boundary with incorrect data. The defect usually lies between them.
+
+### Evidence to capture
+
+- Exact timestamp and timezone.
+- Request, trace, or correlation identifier.
+- Release and commit version.
+- Runtime and dependency versions.
+- Sanitized input shape.
+- Expected and observed output.
+- Frequency and affected population.
+- Resource usage near the incident.
+
+### Hypothesis discipline
+
+For every hypothesis, write:
+
+- Observation it explains.
+- Prediction it makes.
+- Cheapest falsifying test.
+- Result of that test.
+- Next branch if false.
+
+### Verification matrix
+
+After the fix, test the original case, the nearest working case, boundary values, malformed values, concurrent execution, retries, and rollback behavior.
+
+### Completion gate
+
+Close the incident only when the root cause is demonstrated, the original symptom is gone, the regression test fails before the fix and passes after it, monitoring covers recurrence, and temporary instrumentation is removed.
+
 ## Checklist
 
 - [ ] Reproduction established (or evidence correlated for unreproducibles)

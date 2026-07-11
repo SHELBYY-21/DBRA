@@ -97,6 +97,51 @@ When delivering a prompt, return:
 - **Prompt grows bloated and fragile:** Rebuild from the task contract; migrate rules into few-shot examples, which are more robust than instruction lists.
 - **Inconsistent results across runs:** Lower temperature, tighten output format, and check whether inconsistency comes from ambiguous inputs rather than the prompt.
 
+## Evaluation Protocol
+
+### Test categories
+
+Include at least one case for:
+
+- Typical valid input.
+- Minimal valid input.
+- Missing optional data.
+- Missing required data.
+- Maximum expected length.
+- Ambiguous language.
+- Conflicting user instructions.
+- Prompt injection attempt.
+- Unsupported request.
+- Multilingual content when applicable.
+- Output escaping and special characters.
+
+### Scoring rubric
+
+Score each response independently for task correctness, grounding, format validity, completeness, safety, tone, and latency or token cost. Define pass thresholds before comparing prompt versions.
+
+### Regression process
+
+1. Freeze a representative test set.
+2. Save outputs from the current production prompt.
+3. Change one prompt component.
+4. Run identical model settings.
+5. Compare rubric scores and failure categories.
+6. Inspect improvements and regressions manually.
+7. Promote only when required thresholds pass.
+8. Preserve the prior version for rollback.
+
+### Runtime integration
+
+Prefer provider-enforced schemas for structured output. Validate responses outside the model, bound tool access separately, log prompt and model versions, redact sensitive fields, and cap retries.
+
+### Prompt lifecycle
+
+Assign an owner, changelog, evaluation dataset, deployment status, and retirement date. Re-test after model, provider, tool, schema, or knowledge-source changes.
+
+### Delivery gate
+
+A prompt is production-ready only when it has a precise contract, representative tests, measurable acceptance criteria, an injection boundary, runtime validation, known limitations, and a rollback version.
+
 ## Checklist
 
 - [ ] Task contract (inputs, outputs, format, tone) written

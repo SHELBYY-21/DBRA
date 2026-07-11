@@ -94,6 +94,51 @@ Horizon: <time frame> | Review cadence: <interval>
 - **Register was ignored ("we knew and did nothing"):** The process failure is ownership; re-issue with named owners, dated triggers, and register review added to an existing recurring meeting.
 - **Overreaction to a low-probability event:** Recalibrate using base rates; document the reasoning to resist recency bias next cycle.
 
+## Risk Operations
+
+### Scoring calibration
+
+Define scales before scoring:
+
+- Probability: rare, unlikely, possible, likely, almost certain.
+- Impact: negligible, minor, material, severe, existential.
+- Detection: immediate, quick, delayed, difficult, unlikely before harm.
+
+Attach numeric ranges where the organization needs consistent comparisons.
+
+### Mitigation quality test
+
+A mitigation is credible only when it:
+
+1. Addresses a stated cause or impact.
+2. Has a named owner.
+3. Has a due date.
+4. Has a funded resource requirement.
+5. Can be tested before the event.
+6. Has residual risk scored after implementation.
+7. Defines evidence of completion.
+
+### Trigger design
+
+Use leading indicators where possible: error-rate trend before outage, concentration before vendor failure, cash conversion before liquidity pressure, and near-misses before safety incidents.
+
+### Escalation bands
+
+- Green: owner monitors within normal cadence.
+- Amber: mitigation active; review at each milestone.
+- Red: executive decision or immediate containment required.
+- Black: stop-work or incident response threshold reached.
+
+Set thresholds for the specific organization; colors alone are not controls.
+
+### Review questions
+
+At each review, ask what changed, which assumptions expired, whether mitigations reduced residual risk, whether new correlations appeared, and which watch-list item should be promoted or removed.
+
+### Closure criteria
+
+Close a risk only when the exposure no longer exists, the project ended, or residual risk is formally accepted. Completed mitigation does not automatically close the underlying risk.
+
 ## Checklist
 
 - [ ] Scope and time horizon framed

@@ -99,6 +99,52 @@ Type: 1 (irreversible) | 2 (reversible) — Deadline: <date> — Decider: <who>
 - **Paralysis persists after the process:** Force the tie-break: flip a coin and observe the reaction — disappointment reveals the real preference; then commit to it.
 - **Criteria were gamed to justify a pre-made choice:** Re-run scoring with an uninvolved party setting weights first; note the bias for future decisions.
 
+## Decision Hygiene
+
+### Evidence classes
+
+Label inputs before using them:
+
+- Constraint: cannot be violated.
+- Preference: desirable but negotiable.
+- Forecast: uncertain future estimate.
+- Fact: currently verified observation.
+- Assumption: unverified belief.
+- Externality: cost imposed outside the decider.
+
+Do not allow a preference to masquerade as a constraint.
+
+### Tie-breakers
+
+Apply these in order when scores are close:
+
+1. Prefer the more reversible option.
+2. Prefer the option that creates information.
+3. Prefer lower fixed cost and lower lock-in.
+4. Prefer operational simplicity.
+5. Prefer alignment with existing capabilities.
+6. If still tied, choose quickly and set an early review.
+
+### Decision record metadata
+
+Include status, date, decider, consulted parties, scope, alternatives, evidence links, assumptions, consequences, review trigger, and superseding record if replaced.
+
+### Anti-bias review
+
+Before committing, ask:
+
+- Are we anchored on the first proposal?
+- Are sunk costs influencing the score?
+- Did authority suppress dissent?
+- Are vivid anecdotes outweighing base rates?
+- Did we seek only confirming evidence?
+- Are short-term incentives distorting the owner?
+- Would we choose differently if starting today?
+
+### Closure protocol
+
+Communicate the decision, explain what changes now, assign actions, archive the record, and stop debating unless the revisit trigger occurs.
+
 ## Checklist
 
 - [ ] Decision classified as Type 1 or Type 2

@@ -96,6 +96,51 @@ Final report:
 - **Execution stalled on the same blocker twice:** Stop retrying; escalate with everything tried, current hypothesis, and a recommended path.
 - **Final verification fails acceptance criteria:** Do not ship the summary as complete; report the specific failing criterion and the fix plan.
 
+## Execution Controls
+
+### Work-in-progress limits
+
+- Keep one risky item active at a time.
+- Batch only independent low-risk changes.
+- Finish verification before opening another front.
+- Keep deferred work outside the active checklist.
+- Stop adding scope when a milestone is at risk.
+
+### Increment contract
+
+Every increment has:
+
+1. A specific expected outcome.
+2. A bounded change set.
+3. A verification method.
+4. A rollback or recovery path.
+5. A visible completion state.
+
+### Escalation thresholds
+
+Escalate when credentials or access are missing, data loss is possible, a contractual or security boundary changes, the approved architecture is impossible, costs exceed the agreed cap, or acceptance criteria conflict.
+
+Do not escalate ordinary implementation choices that can be reversed cheaply.
+
+### Verification evidence
+
+Capture commands or interactions performed, relevant results, screenshots for visual changes, test cases for behavior, and limitations of the available environment.
+
+### End-of-run cleanup
+
+- Remove temporary debug output.
+- Remove unused dependencies and dead code.
+- Confirm configuration is documented.
+- Re-run the full relevant test path.
+- Review the diff for accidental changes.
+- Update the canonical task state.
+- List deferred work without silently implementing it.
+- Leave the project in a runnable state.
+
+### Delivery standard
+
+A task is complete only when its artifact exists, its acceptance criterion passes, its integration points are checked, and the user can use it without an undocumented step.
+
 ## Checklist
 
 - [ ] Plan restated and sequenced by dependency

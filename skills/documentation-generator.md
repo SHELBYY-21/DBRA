@@ -105,6 +105,47 @@ API reference entries always include: method, path, auth, parameters (table), re
 - **Documentation is technically accurate but nobody understands it:** The reader model was wrong; re-interview an actual target reader, then rewrite task-first with their vocabulary.
 - **Generated changelog misstates a change:** Correct it in place and in the release notes; changelogs are records, so append corrections rather than silently editing history.
 
+## Documentation Quality Gates
+
+### Information architecture
+
+- Give each page one primary reader task.
+- Use titles that match phrases readers search for.
+- Keep navigation shallow and predictable.
+- Link prerequisite concepts before advanced tasks.
+- Put reference details near the feature they describe.
+- Avoid orphan pages with no inbound navigation.
+
+### Example validation
+
+For each example:
+
+1. Start from a clean environment.
+2. Copy commands without hidden edits.
+3. Use supported dependency versions.
+4. Confirm expected output.
+5. Test the documented failure case.
+6. Remove credentials and machine-specific paths.
+7. Mark platform-specific behavior.
+8. Record the last verification date.
+
+### Review roles
+
+Use a technical reviewer for accuracy, a target-reader reviewer for clarity, and an owner for future maintenance. One person may fill multiple roles, but each responsibility must be explicit.
+
+### Freshness controls
+
+- Tie docs to code ownership.
+- Require doc review for user-visible changes.
+- Add automated link and snippet checks where practical.
+- Mark generated sections and their source.
+- Archive obsolete pages rather than leaving duplicates searchable.
+- Schedule review for high-churn setup and API pages.
+
+### Definition of done
+
+Documentation is done when a representative reader completes the target task without undocumented knowledge, every command and example is verified, error recovery is included, and ownership is recorded.
+
 ## Checklist
 
 - [ ] Target reader and their job identified

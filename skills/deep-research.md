@@ -100,6 +100,53 @@ Produce a well-sourced, clearly structured research report that separates establ
 - **Research answered the wrong question:** Return to step 1, restate the question with the user, and salvage reusable findings rather than starting cold.
 - **Time ran out before triangulation:** Ship with single-source claims explicitly flagged and a prioritized verification list — never ship them disguised as facts.
 
+## Research Protocol
+
+### Source quality rubric
+
+Score each source on:
+
+- Authority: expertise or institutional responsibility.
+- Proximity: primary evidence versus retelling.
+- Method: transparent sample, measurement, and analysis.
+- Recency: appropriate freshness for the claim.
+- Independence: incentives and conflicts disclosed.
+- Reproducibility: data or procedure can be checked.
+
+A polished page is not evidence of quality.
+
+### Claim ledger
+
+For every load-bearing claim, retain:
+
+- Exact claim wording.
+- Supporting excerpt or data point.
+- Source URL or identifier.
+- Publication and access dates.
+- Source classification.
+- Confidence level.
+- Contradicting evidence.
+- Conclusions that depend on it.
+
+### Stop conditions
+
+Stop collecting when new credible sources repeat known findings, decisive sub-questions are answered, contradictions are explained or explicitly unresolved, and additional research is unlikely to change the decision.
+
+### Citation checks
+
+Before delivery:
+
+1. Open every cited source.
+2. Confirm the source supports the nearby claim.
+3. Verify quoted wording and numerical units.
+4. Replace citations to summaries with primary sources where available.
+5. Remove sources not used in the synthesis.
+6. Check links and access limitations.
+
+### Update policy
+
+State an expiration date for fast-moving research. Preserve the source log and claim ledger so a later update can re-check changed claims without repeating the full investigation.
+
 ## Checklist
 
 - [ ] Research question and sub-questions written and confirmed

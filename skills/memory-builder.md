@@ -98,6 +98,49 @@ _Source: <memory file>, entry "<entry title>" (recorded <date if available>)_
 - **Saved something the user considers noise:** Delete it, and tighten the saving threshold for that category going forward.
 - **Lost or missing memory file referenced by the index:** Repair the index, reconstruct the file from conversation context where possible, and flag what could not be recovered.
 
+## Memory Governance
+
+### Entry schema
+
+For durable decisions, use:
+
+- Topic or title.
+- Current statement.
+- Scope where it applies.
+- Source: explicit user statement or verified project evidence.
+- Recorded or updated date.
+- Rationale when useful.
+- Supersedes reference when replacing an older entry.
+- Review trigger or expiry for time-sensitive facts.
+
+### Retrieval test
+
+A memory is retrievable when a future assistant can find it from likely user wording, identify whether it is current, understand where it applies, and act without reopening unrelated files.
+
+### Conflict resolution
+
+1. Prefer the user's latest explicit correction.
+2. Prefer verified current project state over older inference.
+3. Narrow broad rules when exceptions are discovered.
+4. Remove superseded statements in the same operation.
+5. Record unresolved ambiguity instead of selecting silently.
+
+### Maintenance cadence
+
+- Review active project decisions after architectural changes.
+- Review tool and framework details after upgrades.
+- Review personal preferences only when the user signals a change.
+- Remove expired operational facts promptly.
+- Keep the main index below its configured context budget.
+
+### Privacy controls
+
+Store the least information needed. Generalize personal details when identity is irrelevant. Do not infer sensitive traits. Honor deletion requests across indexes, topic files, and duplicates.
+
+### Quality gate
+
+Before saving, ask whether the entry is durable, actionable, non-sensitive, uniquely located, correctly scoped, and likely to reduce future repetition. If not, leave it in the conversation rather than memory.
+
 ## Checklist
 
 - [ ] Memory classified by type before saving

@@ -101,6 +101,57 @@ Structure every advisory response as:
 - If the user followed advice and results degraded, run a post-mortem: assumption → action → observed result → revised assumption, then issue an updated recommendation.
 - If the conversation stalls in analysis, force convergence: "Given everything discussed, the single best move is X because Y."
 
+## Operating Notes
+
+### Evidence hierarchy
+
+1. Customer behavior and transaction data.
+2. Cohort and funnel measurements.
+3. Controlled experiments.
+4. Comparable-company benchmarks.
+5. Expert opinion.
+6. Founder intuition.
+
+Use lower-ranked evidence only when stronger evidence is unavailable, and label the downgrade.
+
+### Recommendation thresholds
+
+- Recommend immediately when the move is reversible, low-cost, and evidence is directionally strong.
+- Recommend an experiment when uncertainty is material but testable.
+- Recommend delay only when a specific missing fact could change the decision.
+- Recommend rejection when downside threatens survival or violates a hard constraint.
+
+### Advisory cadence
+
+- Review leading indicators weekly.
+- Review unit economics monthly.
+- Review positioning quarterly or after a major market change.
+- Revisit strategy when a pre-declared trigger fires, not whenever confidence dips.
+
+### Quality gates
+
+Before delivery, verify that the advice:
+
+- Answers the decision actually asked.
+- Uses the user's stage and constraints.
+- Contains no unsupported precision.
+- Names the most important uncertainty.
+- Distinguishes reversible from irreversible actions.
+- Includes a measurable action and owner.
+- Avoids generic startup clichés.
+- Can be challenged with a clear falsification test.
+
+### Handoff
+
+If execution follows, convert the recommendation into:
+
+- A named owner.
+- A due date.
+- A budget or effort cap.
+- A success metric.
+- A kill criterion.
+- A scheduled review.
+
 ## Checklist
 
 - [ ] Decision type classified (pricing, positioning, growth, etc.)

@@ -106,6 +106,48 @@ Result: **<value with units and time basis>**
 - **The model and reality diverge over time:** Diagnose which driver drifted, recalibrate that input from actuals, and shorten the projection horizon until the model tracks again.
 - **User made a decision on a flawed calculation:** Quantify the decision impact of the correction honestly — sometimes the decision still holds; say so either way.
 
+## Model Controls
+
+### Input validation
+
+Before calculating, verify:
+
+- Currency and reporting period.
+- Sign convention for costs and cash flows.
+- Gross versus net values.
+- Inclusive versus exclusive tax treatment.
+- Beginning versus ending balance timing.
+- Simple versus compound rates.
+- Whether growth and churn use the same cohort basis.
+- Whether recurring and one-time items are separated.
+
+### Scenario design
+
+Create scenarios from coherent assumptions, not arbitrary percentage changes:
+
+- Downside: slower volume, lower price, higher cost, delayed collections.
+- Base: current evidence and approved operating plan.
+- Upside: stronger demand with capacity and cost consequences included.
+
+Never increase revenue in the upside case while leaving fulfillment costs unchanged unless that relationship is justified.
+
+### Reconciliation checks
+
+1. Opening cash plus inflows minus outflows equals closing cash.
+2. Revenue equals price times volume after discounts and refunds.
+3. Cohort totals reconcile to reported totals.
+4. Monthly values reconcile to annual summaries.
+5. Percentages use the intended denominator.
+6. No formula mixes nominal and real values.
+
+### Model presentation
+
+Keep inputs visibly separate from formulas, use consistent units, show negative values consistently, identify editable cells or fields, and include a version date.
+
+### Decision safety
+
+When uncertainty is high, present ranges and breakpoints. For material tax, accounting, financing, or investment decisions, provide the calculation framework and require review by a qualified professional.
+
 ## Checklist
 
 - [ ] Question and decision context restated

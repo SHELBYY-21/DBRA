@@ -105,6 +105,55 @@ Design reliable, observable, maintainable automations that remove manual toil â€
 - **Bad transform corrupted destination data:** Restore from the archive/flagged source data; add a validation step comparing pre/post record counts and checksums.
 - **Runaway retry loop:** Trip the kill switch, cap retries, add circuit-breaker logic, and post-mortem why the bound was missing.
 
+## Production Readiness
+
+### Delivery semantics
+
+Choose and document one processing guarantee:
+
+- At-most-once when duplicates are worse than loss.
+- At-least-once when loss is worse than duplicates.
+- Effectively-once through idempotency and durable deduplication.
+
+Never claim exactly-once behavior across distributed systems without proving every boundary.
+
+### Run state
+
+Persist enough state to answer:
+
+- Which trigger started the run?
+- Which version processed it?
+- Which steps completed?
+- Which side effects occurred?
+- Which retries remain?
+- Who can replay or cancel it?
+
+### Launch sequence
+
+1. Validate credentials and permissions.
+2. Replay representative historical payloads.
+3. Test timeout and malformed-input paths.
+4. Force a downstream outage.
+5. Confirm alerts reach the owner.
+6. Run in shadow mode when possible.
+7. Enable a small traffic percentage.
+8. Compare source and destination totals.
+9. Increase traffic gradually.
+10. Record the rollback point.
+
+### Operational metrics
+
+Track success rate, end-to-end latency, retry count, dead-letter depth, duplicate suppression, rate-limit responses, and cost per completed run.
+
+### Change control
+
+- Version schemas and transformations.
+- Preserve replay compatibility for retained events.
+- Roll out breaking changes with dual-read or dual-write periods.
+- Keep old workers available until queued work drains.
+- Test the kill switch during normal operations.
+- Review unused credentials and automations quarterly.
+
 ## Checklist
 
 - [ ] Manual process documented step by step

@@ -96,6 +96,52 @@ Goal: <one goal> | Metric: <one number> | Deadline: <date>
 - **Founder skipped ahead and built the full product:** Salvage: treat the product as the test artifact, drive 20 target users through it this week, and apply pass/fail criteria retroactively defined before viewing results.
 - **Advice was stage-inappropriate:** Recalibrate the stage explicitly and reissue guidance; note what signal caused the misread.
 
+## Evidence Ladder
+
+Rank startup evidence from weakest to strongest:
+
+1. Founder conviction.
+2. Positive reactions from friends.
+3. Stated interest from target users.
+4. Contact information exchanged.
+5. Time invested in a trial.
+6. Existing workaround demonstrated.
+7. Letter of intent with concrete terms.
+8. Deposit, pre-order, or paid pilot.
+9. Repeated paid usage.
+10. Organic referral or expansion.
+
+Do not describe lower-level evidence as traction.
+
+### Interview protocol
+
+- Recruit from the actual target segment.
+- Ask about the last real occurrence of the problem.
+- Quantify frequency, cost, urgency, and current workaround.
+- Avoid pitching until behavior is understood.
+- Ask who controls budget and approval.
+- Record exact language for later positioning.
+- End with a behavioral commitment, not a compliment.
+
+### MVP release gate
+
+Ship the MVP when it can deliver the core promised outcome, measure activation and retention, collect payment where appropriate, support users manually, and recover from common failures. Do not wait for broad feature completeness.
+
+### Stage metrics
+
+- Validation: qualified conversations and commitments.
+- MVP: activation and repeated use.
+- Early revenue: retention, gross margin, and founder-led sales conversion.
+- Growth: channel efficiency, payback, expansion, and operational capacity.
+
+### Founder safeguards
+
+Protect runway, define personal financial limits, document cofounder roles and equity, secure intellectual-property assignment, and avoid long commitments before demand evidence.
+
+### Review cadence
+
+Review experiments weekly, cohorts monthly, strategy after material evidence, and the continuation decision at every pre-committed kill point.
+
 ## Checklist
 
 - [ ] Stage identified before advising

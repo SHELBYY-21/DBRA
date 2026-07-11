@@ -100,6 +100,51 @@ Context: <product, audience, screen's job>
 - **The user implemented all polish and no blockers:** Re-surface the blockers with their user impact stated concretely (e.g., "8% of users cannot read this text") and mark them unmissable in the next report.
 - **Findings were too vague to act on:** Rewrite every unactioned finding into element + measurement + exact new value; vagueness is the reviewer's failure, not the reader's.
 
+## Review Measurements
+
+### Viewport set
+
+Review at minimum:
+
+- Small supported mobile width.
+- Large mobile or narrow tablet.
+- Standard desktop width.
+- Wide desktop where line length and empty space change.
+- Zoomed view at 200% for accessibility.
+
+Use the product's actual supported breakpoints when known.
+
+### State inventory
+
+For every interactive component inspect default, hover, keyboard focus, active, disabled, loading, success, error, empty, and long-content states. Mark untested states explicitly.
+
+### Visual token audit
+
+Record the tokens actually used for:
+
+- Background and surface colors.
+- Text and muted text.
+- Primary and destructive actions.
+- Border and focus treatment.
+- Radius scale.
+- Spacing scale.
+- Type sizes and weights.
+- Elevation or shadow.
+
+Flag one-off values that have no intentional role.
+
+### Accessibility checks
+
+Verify visible focus, logical reading order, non-color status cues, reduced-motion behavior, target size, text resizing, and contrast in every state.
+
+### Fix validation
+
+Apply high-impact recommendations one at a time. Compare before and after at all target viewports, re-check contrast and overflow, and preserve strengths named in the original review.
+
+### Delivery gate
+
+A UI review is complete when issues are evidence-based, prioritized by user impact, mapped to exact elements, expressed as measurable changes, and verified against brand and accessibility constraints.
+
 ## Checklist
 
 - [ ] Context (audience, brand, screen job) established
